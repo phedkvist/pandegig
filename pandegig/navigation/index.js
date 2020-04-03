@@ -11,6 +11,7 @@ import FindGig from '../screens/FindGig';
 import CreateGig from '../screens/CreateGig';
 import Settings from '../screens/Settings';
 import Chat from '../screens/Chat';
+import ChatList from '../screens/ChatList';
 
 const AuthStackNavigator = createStackNavigator({
   SignIn: {
@@ -40,13 +41,28 @@ const GigStackNavigator = createMaterialTopTabNavigator({
   tabBarOptions: {
     labelStyle: {
       fontSize: 12,
+      fontWeight: '700',
     },
     tabStyle: {
       width: width / 2,
+      borderColor: 'red',
     },
     style: {
       paddingTop: 50,
     },
+    indicatorStyle: {
+      backgroundColor: 'lightblue',
+      height: 5,
+    },
+  },
+});
+
+const ChatNavigator = createStackNavigator({
+  ChatList: {
+    screen: ChatList,
+  },
+  Chat: {
+    screen: Chat,
   },
 });
 
@@ -56,7 +72,7 @@ const AppTabNavigator = createBottomTabNavigator(
       screen: GigStackNavigator,
     },
     Chat: {
-      screen: Chat,
+      screen: ChatNavigator,
     },
     Settings: {
       screen: Settings,

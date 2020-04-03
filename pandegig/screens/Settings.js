@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import Auth from '@aws-amplify/auth';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import Button from '../components/Button';
 
 const styles = StyleSheet.create({
   container: {
@@ -24,11 +24,11 @@ const Settings = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Text>Settings</Text>
-      <TouchableOpacity
+      <Button
         onPress={signOut}
       >
-        <Text>Sign Out</Text>
-      </TouchableOpacity>
+        Sign Out
+      </Button>
     </View>
   );
 };
