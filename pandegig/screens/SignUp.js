@@ -46,7 +46,9 @@ export default function SignUp({ navigation }) {
         },
         validationData: [], // optional
       })
+        // eslint-disable-next-line no-console
         .then((data) => console.log(data))
+        // eslint-disable-next-line no-console
         .catch((err) => console.log(err));
     } else {
       setInvalidMessage('Password must be equal and have greater lenght than 6.');
@@ -57,6 +59,7 @@ export default function SignUp({ navigation }) {
     await Auth.confirmSignUp(email, authCode)
       .then(() => {
         navigation.navigate('SignIn');
+        // eslint-disable-next-line no-console
         console.log('Confirm sign up successful');
       })
       .catch((err) => {

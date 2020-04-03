@@ -5,7 +5,9 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 100,
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 
@@ -15,6 +17,7 @@ const Settings = ({ navigation }) => {
       .then(() => {
         navigation.navigate('AuthLoading');
       })
+      // eslint-disable-next-line no-console
       .catch((err) => console.error('Error while signing out!', err));
   }, [navigation]);
 

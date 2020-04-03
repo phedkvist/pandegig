@@ -33,6 +33,7 @@ export default class AuthLoadingScreen extends React.Component {
       .then((user) => {
         this.setState({ userToken: user.signInUserSession.accessToken.jwtToken });
       })
+      // eslint-disable-next-line no-console
       .catch(() => console.log('err signing in'));
     const { navigation } = this.props;
     const { userToken } = this.state;
