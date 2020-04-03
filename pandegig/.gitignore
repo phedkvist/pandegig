@@ -10,5 +10,7 @@ npm-debug.*
 web-build/
 web-report/
 
+aws-exports.js
+
 # macOS
 .DS_Store
