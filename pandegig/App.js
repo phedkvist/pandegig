@@ -1,11 +1,24 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import SignIn from './screens/SignIn';
+import { createSwitchNavigator } from 'react-navigation';
 
-export default function App() {
+const AuthStackNavigator = createStackNavigator({
+  SignIn: {
+    screen: SignIn,
+  }
+});
+
+const AppNavigator = createSwitchNavigator({
+  Auth: AuthStackNavigator,
+});
+
+
+const AppContainer = createAppContainer(AppNavigator);
+
+function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-    </View>
+    <AppContainer />
   );
 }
 
