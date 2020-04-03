@@ -1,7 +1,8 @@
 import React from 'react';
+import { Dimensions } from 'react-native';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
-import { createBottomTabNavigator } from 'react-navigation-tabs';
+import { createBottomTabNavigator, createMaterialTopTabNavigator } from 'react-navigation-tabs';
 import Ionicons from 'react-native-vector-icons/MaterialIcons';
 import SignIn from '../screens/SignIn';
 import SignUp from '../screens/SignUp';
@@ -20,12 +21,32 @@ const AuthStackNavigator = createStackNavigator({
   },
 });
 
-const GigStackNavigator = createStackNavigator({
+const { width } = Dimensions.get('window');
+
+const GigStackNavigator = createMaterialTopTabNavigator({
   FindGig: {
     screen: FindGig,
+    navigationOptions: () => ({
+      title: 'Find a Gig',
+    }),
   },
   CreateGig: {
     screen: CreateGig,
+    navigationOptions: () => ({
+      title: 'Create a Gig',
+    }),
+  },
+}, {
+  tabBarOptions: {
+    labelStyle: {
+      fontSize: 12,
+    },
+    tabStyle: {
+      width: width / 2,
+    },
+    style: {
+      paddingTop: 50,
+    },
   },
 });
 
