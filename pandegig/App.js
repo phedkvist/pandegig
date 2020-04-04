@@ -1,32 +1,12 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import SignIn from './screens/SignIn';
-import { createSwitchNavigator } from 'react-navigation';
+import Amplify from '@aws-amplify/core';
+import AWSConfig from './aws-exports';
+import Navigation from './navigation';
 
-const AuthStackNavigator = createStackNavigator({
-  SignIn: {
-    screen: SignIn,
-  }
-});
+Amplify.configure(AWSConfig);
 
-const AppNavigator = createSwitchNavigator({
-  Auth: AuthStackNavigator,
-});
-
-
-const AppContainer = createAppContainer(AppNavigator);
-
-function App() {
+export default function App() {
   return (
-    <AppContainer />
+    <Navigation />
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

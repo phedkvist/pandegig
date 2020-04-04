@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, Alert } from 'react-native';
+import React, { useState, useCallback } from 'react';
+import {
+  View, StyleSheet, Alert, TouchableOpacity, Text,
+} from 'react-native';
 import Auth from '@aws-amplify/auth';
-import Button from '../../components/Button';
-import Input from '../../components/Input';
+import Button from '../components/Button';
+import Input from '../components/Input';
 
 const styles = StyleSheet.create({
   container: {
@@ -14,32 +16,34 @@ const styles = StyleSheet.create({
 });
 
 
-export default function SignIn(props) {
-  const [email, onChangeEmail] = useState('');
-  const [password, onChangePassword] = useState('');
+export default function SignIn({ navigation }) {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-  const signIn = async () => {
+  const onChangeEmail = useCallback((text) => setEmail(text), [setEmail]);
+  const onChangePassword = useCallback((text) => setPassword(text), [setPassword]);
+  const onNavigateSignUp = useCallback(() => navigation.navigate('SignUp'), [navigation]);
+
+  const signIn = useCallback(async () => {
     await Auth.signIn(email, password)
-      .then((user) => {
-        props.navigation.navigate('AuthLoading');
+      .then(() => {
+        navigation.navigate('AuthLoading');
       })
       .catch((err) => {
         if (!err.message) {
-          console.log('Error when signing in: ', err);
           Alert.alert('Error when signing in: ', err);
         } else {
-          console.log('Error when signing in: ', err.message);
           Alert.alert('Error when signing in: ', err.message);
         }
       });
-  };
+  }, [navigation, email, password]);
 
   return (
     <View style={styles.container}>
       <Input
         value={email}
         placeholder="email@example.com"
-        onChange={(text) => onChangeEmail(text)}
+        onChange={onChangeEmail}
         autoCompleteType="email"
         autoCapitalize="none"
         autoFocus
@@ -48,15 +52,20 @@ export default function SignIn(props) {
       <Input
         value={password}
         placeholder="password"
-        onChange={(text) => onChangePassword(text)}
+        onChange={onChangePassword}
         secureTextEntry
         autoCompleteType="password"
       />
       <Button
-        onPress={() => signIn()}
+        onPress={signIn}
       >
         Sign In
       </Button>
+      <TouchableOpacity
+        onPress={onNavigateSignUp}
+      >
+        <Text>Sign Up</Text>
+      </TouchableOpacity>
     </View>
   );
 }

@@ -1,10 +1,10 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 
-const CreateGig = () => (
+const Chat = () => (
   <View>
-    <Text>Create Gig</Text>
+    <Text>Chat</Text>
   </View>
 );
 
-export default CreateGig;
+export default Chat;
