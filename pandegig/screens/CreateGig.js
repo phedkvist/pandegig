@@ -3,8 +3,10 @@ import PropTypes from 'prop-types';
 import {
   View, Text, StyleSheet, ScrollView,
 } from 'react-native';
+import { v1 } from 'uuid';
 import Input from '../components/Input';
 import Button from '../components/Button';
+
 
 const styles = StyleSheet.create({
   container: {
@@ -37,7 +39,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const CreateGig = ({ screenProps }) => {
+const CreateGig = ({ screenProps, navigation }) => {
   const { addGig } = screenProps;
   const [title, setTitle] = useState();
   const [description, setDescription] = useState();
@@ -79,13 +81,17 @@ const CreateGig = ({ screenProps }) => {
     }
 
     if (!error) {
-      // send to AWS PIERKAN <3
       addGig({
-        title, description, location, earnings,
+        id: v1(), title, description, location, earnings,
       });
+      setTitle('');
+      setDescription('');
+      setLocation('');
+      setEarnings('');
+      navigation.navigate('FindGig');
     }
     return errorMessage;
-  }, [errorMessage, description, title, location, earnings, addGig]);
+  }, [errorMessage, description, title, location, earnings, addGig, navigation]);
 
   return (
     <View style={styles.container}>
@@ -144,9 +150,9 @@ const CreateGig = ({ screenProps }) => {
 };
 
 CreateGig.propTypes = {
-  screenProps: {
+  screenProps: PropTypes.shape({
     addGig: PropTypes.func.isRequired,
-  }.isRequired,
+  }).isRequired,
 };
 
 export default CreateGig;
