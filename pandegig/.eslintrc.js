@@ -26,12 +26,13 @@ module.exports = {
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
     "react/prop-types": ["error", { "ignore": ["navigation"] }],
     "react-hooks/exhaustive-deps": "warn",
+    "linebreak-style": 0,
     "react/jsx-no-bind": ["warn", {
       "ignoreDOMComponents": false,
       "ignoreRefs": false,
       "allowArrowFunctions": false,
       "allowFunctions": false,
-      "allowBind": false
+      "allowBind": false,
     }]
 
   },
