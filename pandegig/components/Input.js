@@ -18,9 +18,10 @@ const Input = ({
   value, onChange, placeholder, numberOfLines, ...props
 }) => {
   const minHeight = numberOfLines * 40;
+  const marginBottom = numberOfLines * 40;
   return (
     <TextInput
-      style={{ ...styles.input, minHeight }}
+      style={{ ...styles.input, minHeight, marginBottom }}
       onChangeText={onChange}
       value={value}
       placeholder={placeholder}
