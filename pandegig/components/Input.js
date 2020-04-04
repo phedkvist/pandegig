@@ -14,11 +14,14 @@ const styles = StyleSheet.create({
   },
 });
 
-const Input = ({ value, onChange, ...props }) => (
+const Input = ({
+  value, onChange, placeholder, ...props
+}) => (
   <TextInput
     style={styles.input}
     onChangeText={onChange}
     value={value}
+    placeholder={placeholder}
     // eslint-disable-next-line react/jsx-props-no-spreading
     {...props}
   />
@@ -27,10 +30,12 @@ const Input = ({ value, onChange, ...props }) => (
 Input.propTypes = {
   value: PropTypes.string,
   onChange: PropTypes.func.isRequired,
+  placeholder: PropTypes.string,
 };
 
 Input.defaultProps = {
   value: '',
+  placeholder: '',
 };
 
 export default Input;

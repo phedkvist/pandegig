@@ -6,7 +6,5 @@ import Navigation from './navigation';
 Amplify.configure(AWSConfig);
 
 export default function App() {
-  return (
-    <Navigation />
-  );
+  return <Navigation />;
 }
