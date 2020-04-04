@@ -10,6 +10,7 @@ class CustomAppNavigator extends React.Component {
       gigs: [],
       chat: [],
     };
+    this.addGig = this.addGig.bind(this);
   }
 
   componentDidMount = () => {
@@ -17,8 +18,10 @@ class CustomAppNavigator extends React.Component {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  addGig() {
+  addGig(gig) {
     // TODO: Add gig to our state
+    const { gigs } = this.state;
+    this.setState({ gigs: [...gigs, gig] });
   }
 
   // eslint-disable-next-line class-methods-use-this
