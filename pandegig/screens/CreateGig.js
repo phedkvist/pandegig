@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from 'react';
+import PropTypes from 'prop-types';
 import {
   View, Text, StyleSheet, ScrollView,
 } from 'react-native';
@@ -36,7 +37,8 @@ const styles = StyleSheet.create({
   },
 });
 
-const CreateGig = () => {
+const CreateGig = ({ screenProps }) => {
+  const { addGig } = screenProps;
   const [title, setTitle] = useState();
   const [description, setDescription] = useState();
   const [location, setLocation] = useState();
@@ -78,10 +80,12 @@ const CreateGig = () => {
 
     if (!error) {
       // send to AWS PIERKAN <3
-      return null;
+      addGig({
+        title, description, location, earnings,
+      });
     }
     return errorMessage;
-  }, [errorMessage, description, title, location, earnings]);
+  }, [errorMessage, description, title, location, earnings, addGig]);
 
   return (
     <View style={styles.container}>
@@ -137,6 +141,12 @@ const CreateGig = () => {
       </ScrollView>
     </View>
   );
+};
+
+CreateGig.propTypes = {
+  screenProps: {
+    addGig: PropTypes.func.isRequired,
+  }.isRequired,
 };
 
 export default CreateGig;
