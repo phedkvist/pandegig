@@ -1,18 +1,29 @@
 import { createMaterialTopTabNavigator } from 'react-navigation-tabs';
+import { createStackNavigator } from 'react-navigation-stack';
 import { Dimensions } from 'react-native';
 import FindGig from '../screens/FindGig';
 import CreateGig from '../screens/CreateGig';
+import SingleGig from '../screens/SingleGig';
 
 const { width } = Dimensions.get('window');
 
-
-export default createMaterialTopTabNavigator({
+const GigNavigator = createStackNavigator({
   FindGig: {
     screen: FindGig,
     navigationOptions: () => ({
       title: 'Find a Gig',
     }),
   },
+  SingleGig: {
+    screen: SingleGig,
+    navigationOptions: () => ({
+      title: 'Single Gig',
+    }),
+  },
+});
+
+export default createMaterialTopTabNavigator({
+  GigNavigator,
   CreateGig: {
     screen: CreateGig,
     navigationOptions: () => ({
@@ -30,7 +41,7 @@ export default createMaterialTopTabNavigator({
       borderColor: 'red',
     },
     style: {
-      paddingTop: 50,
+      paddingTop: 40,
     },
     indicatorStyle: {
       backgroundColor: 'lightblue',

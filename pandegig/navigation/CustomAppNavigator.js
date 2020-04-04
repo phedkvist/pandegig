@@ -1,5 +1,48 @@
 import React from 'react';
+import { v1 } from 'uuid';
 import AppNavigator from './AppNavigator';
+
+
+// Temporary gigs for testing pruposes
+const initialGigs = [
+  {
+    title: 'Maggan behöver hjälp',
+    description: 'adsfgagdsf',
+    earnings: '200',
+    location: 'Fjollträsk',
+    id: v1(),
+  },
+  {
+    title: 'Maggan behöver hjälp',
+    description: 'adsfgagdsf',
+    earnings: '200',
+    location: 'Bromma',
+    id: v1(),
+  },
+  {
+    title: 'Maggan behöver hjälp',
+    description: 'adsfgagdsf',
+    earnings: '200',
+    location: 'Linkan',
+    id: v1(),
+  },
+];
+
+/* eslint-disable no-tabs */
+/*
+
+MESSAGES TABLE
+
+Columns 	    Type 	      Example
+messageId 	  integer 	  1001
+from_user_id 	integer 	  sender
+to_user_id 	  integer 	  receiver
+content 	    string 	    hello world
+create_at 	  timestamp 	2019-07-15 12:00:00
+
+*/
+/* eslint-enable no-tabs */
+
 
 class CustomAppNavigator extends React.Component {
   static router = AppNavigator.router;
@@ -7,7 +50,7 @@ class CustomAppNavigator extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      gigs: [],
+      gigs: initialGigs,
       chat: [],
     };
     this.addGig = this.addGig.bind(this);
