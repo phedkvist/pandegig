@@ -1,5 +1,7 @@
 import React, { useState, useCallback } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import {
+  View, Text, StyleSheet, ScrollView,
+} from 'react-native';
 import Input from '../components/Input';
 import Button from '../components/Button';
 
@@ -12,7 +14,7 @@ const styles = StyleSheet.create({
     fontWeight: '800',
     color: 'gray',
     textTransform: 'uppercase',
-    marginTop: 30,
+    marginTop: 100,
     marginBottom: 20,
     textAlign: 'center',
 
@@ -48,35 +50,39 @@ const CreateGig = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Create Gig</Text>
-      <Text style={styles.label}>Title</Text>
-      <Input value={title} placeholder="Send food" onChange={onChangeTitle} />
-      <Text style={styles.label}>Describe the Gig</Text>
-      <Input
-        value={description}
-        onChange={onChangeDescription}
-        multiline
-        numberOfLines={4}
-        placeholder="I need help with..."
-      />
-      <Text style={styles.label}>Location</Text>
-      <Input
-        value={location}
-        placeholder="Drottninggatan 3"
-        onChange={onChangeLocation}
-      />
-      <Text style={styles.label}>Earnings</Text>
-      <Input
-        value={earnings}
-        placeholder="100kr"
-        onChange={onChangeEarnings}
-        keyboardType="numeric"
-      />
-      <View style={styles.button}>
-        <Button>
-          Post Gig
-        </Button>
-      </View>
+      <ScrollView>
+        <Text style={styles.title}>Create Gig</Text>
+        <Text style={styles.label}>Title</Text>
+        <Input value={title} placeholder="Send food" onChange={onChangeTitle} />
+        <Text style={styles.label}>Describe the Gig</Text>
+        <Input
+          value={description}
+          onChange={onChangeDescription}
+          multiline
+          numberOfLines={4}
+          placeholder="I need help with..."
+        />
+        <Text style={styles.label}>Location</Text>
+        <Input
+          value={location}
+          placeholder="Drottninggatan 3"
+          onChange={onChangeLocation}
+        />
+        <Text style={styles.label}>Earnings</Text>
+        <Input
+          value={earnings}
+          placeholder="100kr"
+          onChange={onChangeEarnings}
+          keyboardType="numeric"
+        />
+        <View style={styles.button}>
+          <Button
+            onPress={undefined}
+          >
+            Post Gig
+          </Button>
+        </View>
+      </ScrollView>
     </View>
   );
 };
