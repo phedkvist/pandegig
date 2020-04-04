@@ -1,7 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import {
-  View, StyleSheet, Text, Alert,
-} from 'react-native';
+import { View, StyleSheet, Text, Alert } from 'react-native';
 import Auth from '@aws-amplify/auth';
 import Button from '../components/Button';
 import Input from '../components/Input';
@@ -13,6 +11,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: 50,
   },
+  errorText: {
+    textAlign: 'center',
+    fontSize: 16,
+    paddingBottom: 2,
+    color: '#ff5252',
+  },
 });
 
 export default function SignUp({ navigation }) {
@@ -20,6 +24,7 @@ export default function SignUp({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const [invalidMessage, setInvalidMessage] = useState(null);
   const [confirmDialog, setConfirmDialog] = useState(false);
@@ -31,10 +36,29 @@ export default function SignUp({ navigation }) {
   const onChangeRepeatPassword = useCallback((p) => setRepeatPassword(p), []);
   const onChangeAuthCode = useCallback((a) => setAuthCode(a), []);
 
-
   const signUp = useCallback(async () => {
-    const validPassword = password.length > 5 && (password === repeatPassword);
-    if (validPassword) {
+    const validPassword = (password.length > 5 && password === repeatPassword);
+    // eslint-disable-next-line no-useless-escape
+    const validateEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);
+
+    let error = false;
+    if (email == null || email === '' || !validateEmail) {
+      error = true;
+      setErrorMessage('You must enter you email!');
+    } else if (password == null || password === '' || validPassword) {
+      error = true;
+      setErrorMessage('You must enter your password!');
+    } else if (name == null || name === '') {
+      error = true;
+      setErrorMessage('You must enter your name!');
+    } else if (password !== repeatPassword) {
+      error = true;
+      setErrorMessage('Password did not match');
+    } else {
+      setErrorMessage('');
+    }
+
+    if (!error) {
       setInvalidMessage(null);
       setConfirmDialog(true);
       Auth.signUp({
@@ -50,8 +74,6 @@ export default function SignUp({ navigation }) {
         .then((data) => console.log(data))
         // eslint-disable-next-line no-console
         .catch((err) => console.log(err));
-    } else {
-      setInvalidMessage('Password must be equal and have greater lenght than 6.');
     }
   }, [email, name, password, repeatPassword]);
 
@@ -103,11 +125,10 @@ export default function SignUp({ navigation }) {
             secureTextEntry
             autoCompleteType="password"
           />
-          <Button
-            onPress={signUp}
-          >
-            Sign Up
-          </Button>
+          <Button onPress={signUp}>Sign Up</Button>
+          <View>
+            <Text style={styles.errorText}>{errorMessage}</Text>
+          </View>
         </>
       )}
       {confirmDialog && (
@@ -117,16 +138,10 @@ export default function SignUp({ navigation }) {
             placeholder="XXX"
             onChange={onChangeAuthCode}
           />
-          <Button
-            onPress={confirmSignUp}
-          >
-            Confirm Sign Up
-          </Button>
+          <Button onPress={confirmSignUp}>Confirm Sign Up</Button>
         </>
       )}
-      <Text>
-        {invalidMessage}
-      </Text>
+      <Text>{invalidMessage}</Text>
     </View>
   );
 }

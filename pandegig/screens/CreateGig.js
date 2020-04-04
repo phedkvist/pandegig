@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
   button: {
     alignItems: 'center',
   },
-  resText: {
+  errorText: {
     textAlign: 'center',
     fontSize: 16,
     paddingBottom: 2,
@@ -130,7 +130,7 @@ const CreateGig = () => {
           </View>
         </View>
         <View>
-          <Text style={styles.resText}>
+          <Text style={styles.errorText}>
             {errorMessage}
           </Text>
         </View>
