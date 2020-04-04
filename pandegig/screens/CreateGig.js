@@ -1,6 +1,33 @@
 import React, { useState, useCallback } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import Input from '../components/Input';
+import Button from '../components/Button';
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  title: {
+    fontSize: 22,
+    fontWeight: '800',
+    color: 'gray',
+    textTransform: 'uppercase',
+    marginTop: 30,
+    marginBottom: 20,
+    textAlign: 'center',
+
+  },
+  label: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: 'gray',
+    marginTop: 10,
+    marginLeft: '3%',
+  },
+  button: {
+    alignItems: 'center',
+  },
+});
 
 const CreateGig = () => {
   const [title, setTitle] = useState();
@@ -15,14 +42,16 @@ const CreateGig = () => {
   const onChangeLocation = useCallback((text) => setLocation(text), [
     setLocation,
   ]);
-  const onChangeEarnings = useCallback((text) => setEarnings(text), [
+  const onChangeEarnings = useCallback((text) => setEarnings(text.replace(/[^0-9]/g, '')), [
     setEarnings,
   ]);
 
   return (
-    <View>
-      <Text>Create Gig</Text>
+    <View style={styles.container}>
+      <Text style={styles.title}>Create Gig</Text>
+      <Text style={styles.label}>Title</Text>
       <Input value={title} placeholder="Send food" onChange={onChangeTitle} />
+      <Text style={styles.label}>Describe the Gig</Text>
       <Input
         value={description}
         onChange={onChangeDescription}
@@ -30,12 +59,24 @@ const CreateGig = () => {
         numberOfLines={4}
         placeholder="I need help with..."
       />
+      <Text style={styles.label}>Location</Text>
       <Input
         value={location}
         placeholder="Drottninggatan 3"
         onChange={onChangeLocation}
       />
-      <Input value={earnings} placeholder="100kr" onChange={onChangeEarnings} />
+      <Text style={styles.label}>Earnings</Text>
+      <Input
+        value={earnings}
+        placeholder="100kr"
+        onChange={onChangeEarnings}
+        keyboardType="numeric"
+      />
+      <View style={styles.button}>
+        <Button>
+          Post Gig
+        </Button>
+      </View>
     </View>
   );
 };
