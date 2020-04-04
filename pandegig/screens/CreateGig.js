@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
     fontWeight: '800',
     color: 'gray',
     textTransform: 'uppercase',
-    marginTop: 100,
+    marginTop: 30,
     marginBottom: 20,
     textAlign: 'center',
   },
@@ -44,6 +44,7 @@ const CreateGig = ({ screenProps, navigation }) => {
   const [title, setTitle] = useState();
   const [description, setDescription] = useState();
   const [location, setLocation] = useState();
+  const [phone, setPhone] = useState();
   const [earnings, setEarnings] = useState();
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -58,6 +59,12 @@ const CreateGig = ({ screenProps, navigation }) => {
     (text) => setEarnings(text.replace(/[^0-9]/g, '')),
     [setEarnings],
   );
+
+  const onChangePhone = useCallback(
+    (text) => setPhone(text.replace(/[^0-9]/g, '')),
+    [setPhone],
+  );
+
 
   const onPressCreateGig = useCallback(() => {
     let error = false;
@@ -76,29 +83,33 @@ const CreateGig = ({ screenProps, navigation }) => {
     } else if (earnings === 0) {
       error = true;
       setErrorMessage('Earnings can\'t be below 0!');
+    } else if (earnings === undefined || earnings == null) {
+      error = true;
+      setErrorMessage('You must enter a phone number!');
     } else {
       setErrorMessage('');
     }
 
     if (!error) {
       addGig({
-        id: v1(), title, description, location, earnings,
+        id: v1(), title, description, location, earnings, phone,
       });
       setTitle('');
       setDescription('');
       setLocation('');
       setEarnings('');
+      setPhone('');
       navigation.navigate('FindGig');
     }
     return errorMessage;
-  }, [errorMessage, description, title, location, earnings, addGig, navigation]);
+  }, [errorMessage, description, title, location, earnings, addGig, navigation, phone]);
 
   return (
     <View style={styles.container}>
       <ScrollView style={styles.container}>
         <Text style={styles.title}>Create Gig</Text>
 
-        <View style={styles.inputContainer}>
+        <View>
           <Text style={styles.label}>Title</Text>
           <Input
             value={title}
@@ -106,7 +117,7 @@ const CreateGig = ({ screenProps, navigation }) => {
             onChange={onChangeTitle}
           />
         </View>
-        <View style={styles.inputContainer}>
+        <View>
           <Text style={styles.label}>Describe the Gig</Text>
           <Input
             value={description}
@@ -116,7 +127,17 @@ const CreateGig = ({ screenProps, navigation }) => {
             placeholder="I need help with..."
           />
         </View>
-        <View style={styles.inputContainer}>
+        <View>
+          <Text style={styles.label}>Phone number</Text>
+          <Input
+            value={phone}
+            placeholder="0701234567"
+            onChange={onChangePhone}
+            keyboardType="numeric"
+            maxLength={10}
+          />
+        </View>
+        <View>
           <Text style={styles.label}>Location</Text>
           <Input
             value={location}
@@ -124,7 +145,7 @@ const CreateGig = ({ screenProps, navigation }) => {
             onChange={onChangeLocation}
           />
         </View>
-        <View style={styles.inputContainer}>
+        <View>
           <Text style={styles.label}>Earnings</Text>
           <Input
             value={earnings}
@@ -134,7 +155,7 @@ const CreateGig = ({ screenProps, navigation }) => {
           />
         </View>
 
-        <View style={styles.inputContainer}>
+        <View>
           <View style={styles.button}>
             <Button onPress={onPressCreateGig}>Post Gig</Button>
           </View>
