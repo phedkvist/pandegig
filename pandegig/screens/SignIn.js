@@ -40,8 +40,8 @@ export default function SignIn({ navigation }) {
     let error = false;
     if (email == null || email === '' || !validateEmail) {
       error = true;
-      setErrorMessage('You must enter you email!');
-    } else if (password == null || password === '') {
+      setErrorMessage('You must enter your email!');
+    } else if (!password || password === '') {
       error = true;
       setErrorMessage('You must enter your password!');
     } else {

@@ -78,6 +78,8 @@ class CustomAppNavigator extends React.Component {
     // TODO: Add gig to our state
     const { gigs } = this.state;
     this.setState({ gigs: [...gigs, gig] });
+    // AWS URL: https://jbht08al65.execute-api.eu-central-1.amazonaws.com/beta
+    // 
   }
 
   // eslint-disable-next-line class-methods-use-this

@@ -44,11 +44,11 @@ export default function SignUp({ navigation }) {
     let error = false;
     if (email == null || email === '' || !validateEmail) {
       error = true;
-      setErrorMessage('You must enter you email!');
-    } else if (password == null || password === '' || validPassword) {
+      setErrorMessage('You must enter your email!');
+    } else if (!password || password === '' || !validPassword) {
       error = true;
       setErrorMessage('You must enter your password!');
-    } else if (name == null || name === '') {
+    } else if (!name || name === '') {
       error = true;
       setErrorMessage('You must enter your name!');
     } else if (password !== repeatPassword) {
