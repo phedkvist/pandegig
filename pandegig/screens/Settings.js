@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import Auth from '@aws-amplify/auth';
 import Button from '../components/Button';
 
@@ -23,7 +23,6 @@ const Settings = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text>Settings</Text>
       <Button
         onPress={signOut}
       >
