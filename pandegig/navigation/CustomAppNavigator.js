@@ -135,11 +135,15 @@ class CustomAppNavigator extends React.Component {
     this.state = {
       gigs: initialGigs,
       chat: [],
+      currentUserId: undefined,
     };
     this.addGig = this.addGig.bind(this);
+    this.deleteGig = this.deleteGig.bind(this);
   }
 
   componentDidMount = async () => {
+    const user = await Auth.currentUserInfo();
+    this.setState({ currentUserId: user.id });
     // TODO: Fetch all data including gigs and chat from server
     // console.log(this.state.gigs[0]);
     // this.addGig(this.state.gigs[0]);
@@ -147,9 +151,8 @@ class CustomAppNavigator extends React.Component {
 
   // eslint-disable-next-line class-methods-use-this
   async addGig(gig) {
-    const { gigs } = this.state;
-    const user = await Auth.currentUserInfo();
-    const gigBody = { ...gig, userId: user.id };
+    const { gigs, currentUserId } = this.state;
+    const gigBody = { ...gig, userId: currentUserId };
     this.setState({ gigs: [...gigs, gigBody] });
     const awsUrl = 'https://jbht08al65.execute-api.eu-central-1.amazonaws.com/beta/gigs';
     try {
@@ -170,13 +173,35 @@ class CustomAppNavigator extends React.Component {
     }
   }
 
+  async deleteGig(id) {
+    const { gigs } = this.state;
+    const newGigs = gigs.filter((g) => g.id !== id);
+    this.setState({ gigs: newGigs });
+    const awsUrl = 'https://jbht08al65.execute-api.eu-central-1.amazonaws.com/beta/gigs';
+    try {
+      const token = await helpers.token();
+      const response = await fetch(awsUrl, {
+        method: 'DELETE',
+        body: JSON.stringify({ id }),
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const json = await response.json();
+      console.log('JSON RESPONSE: ', json);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+
   // eslint-disable-next-line class-methods-use-this
   addChat() {
     // TODO: Add chat to our state
   }
 
   render() {
-    const { gigs, chat } = this.state;
+    const { gigs, chat, currentUserId } = this.state;
     const { navigation } = this.props;
 
     return (
@@ -185,8 +210,10 @@ class CustomAppNavigator extends React.Component {
         screenProps={{
           gigs,
           chat,
+          currentUserId,
           addChat: this.addChat,
           addGig: this.addGig,
+          deleteGig: this.deleteGig,
         }}
       />
     );

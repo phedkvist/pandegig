@@ -38,6 +38,18 @@ const styles = StyleSheet.create({
   },
 });
 
+const formatDate = () => {
+  const d = new Date();
+  let month = `${d.getMonth() + 1}`;
+  let day = `${d.getDate()}`;
+  const year = d.getFullYear();
+
+  if (month.length < 2) month = `0${month}`;
+  if (day.length < 2) day = `0${day}`;
+
+  return [year, month, day].join('-');
+};
+
 const CreateGig = ({ screenProps, navigation }) => {
   const { addGig } = screenProps;
   const [title, setTitle] = useState();
@@ -91,18 +103,6 @@ const CreateGig = ({ screenProps, navigation }) => {
     if (!error) {
       const randomColors = ['#eef9bf', '#a7e9af', '#75b79e', '#6a8caf'];
       const cardColor = randomColors[Math.floor(Math.random() * randomColors.length)];
-
-      const formatDate = () => {
-        const d = new Date();
-        let month = `${d.getMonth() + 1}`;
-        let day = `${d.getDate()}`;
-        const year = d.getFullYear();
-
-        if (month.length < 2) month = `0${month}`;
-        if (day.length < 2) day = `0${day}`;
-
-        return [year, month, day].join('-');
-      };
 
       const createdAt = formatDate();
 
