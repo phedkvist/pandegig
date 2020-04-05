@@ -1,6 +1,8 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Text, StyleSheet, View } from 'react-native';
+import {
+  Text, StyleSheet, View, RefreshControl,
+} from 'react-native';
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 import { Card } from 'react-native-shadow-cards';
 
@@ -9,6 +11,9 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  scrollView: {
+    flex: 1,
   },
   card: { padding: 10, margin: 10 },
   cardHeader: {
@@ -55,11 +60,29 @@ Gig.propTypes = {
   }).isRequired,
 };
 
+function wait(timeout) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, timeout);
+  });
+}
+
 const FindGig = ({ screenProps, navigation }) => {
-  const { gigs } = screenProps;
+  const { gigs, getGigs } = screenProps;
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    getGigs();
+    wait(1000).then(() => setRefreshing(false));
+  }, [setRefreshing, getGigs]);
   return (
     <View style={styles.container}>
-      <ScrollView>
+      <ScrollView
+        contentContainerStyle={styles.scrollView}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
         {gigs.map((g) => (
           <Gig key={g.Id} navigation={navigation} gig={g} />
         ))}
@@ -82,6 +105,7 @@ FindGig.propTypes = {
         createdAt: PropTypes.instanceOf(Date).isRequired,
       }).isRequired,
     ).isRequired,
+    getGigs: PropTypes.func.isRequired,
   }).isRequired,
 };
 

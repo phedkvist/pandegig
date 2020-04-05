@@ -140,6 +140,7 @@ class CustomAppNavigator extends React.Component {
     };
     this.addGig = this.addGig.bind(this);
     this.deleteGig = this.deleteGig.bind(this);
+    this.getGigs = this.getGigs.bind(this);
   }
 
   componentDidMount = async () => {
@@ -148,9 +149,7 @@ class CustomAppNavigator extends React.Component {
     this.getGigs();
   }
 
-  // eslint-disable-next-line class-methods-use-this
   async getGigs() {
-    const { gigs } = this.state;
     try {
       const token = await helpers.token();
       const response = await fetch(awsUrl, {
@@ -163,8 +162,8 @@ class CustomAppNavigator extends React.Component {
       const json = await response.json();
       const gigsRes = JSON.parse(json).Items;
       console.log('GET GIGS RESPONSE: ', gigsRes);
-      const newGigs = gigsRes.map((g) => ({ ...g, createdAt: new Date(g.createdAt) }));
-      this.setState({ gigs: [...gigs, ...newGigs] });
+      const newGigsFormatted = gigsRes.map((g) => ({ ...g, createdAt: new Date(g.createdAt) }));
+      this.setState({ gigs: [...newGigsFormatted] });
     } catch (error) {
       console.error('Error:', error);
     }
@@ -231,6 +230,7 @@ class CustomAppNavigator extends React.Component {
           currentUserId,
           addChat: this.addChat,
           addGig: this.addGig,
+          getGigs: this.getGigs,
           deleteGig: this.deleteGig,
         }}
       />
