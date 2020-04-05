@@ -146,6 +146,7 @@ const CreateGig = ({ screenProps, navigation }) => {
             value={title}
             placeholder="Send food"
             onChange={onChangeTitle}
+            maxLength={34}
           />
         </View>
         <View>
