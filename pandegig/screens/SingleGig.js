@@ -2,6 +2,7 @@ import React, { useCallback } from 'react';
 import {
   Text, View, StyleSheet, Linking,
 } from 'react-native';
+import PropTypes from 'prop-types';
 import { Card } from 'react-native-shadow-cards';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/MaterialIcons';
@@ -64,7 +65,20 @@ const styles = StyleSheet.create({
   },
 });
 
-const SingleGig = ({ navigation }) => {
+const formatDate = (d) => {
+  let month = `${d.getMonth() + 1}`;
+  let day = `${d.getDate()}`;
+  const year = d.getFullYear();
+
+  if (month.length < 2) month = `0${month}`;
+  if (day.length < 2) day = `0${day}`;
+
+  return [year, month, day].join('-');
+};
+
+const SingleGig = ({ screenProps, navigation }) => {
+  const { deleteGig, currentUserId } = screenProps;
+
   const IconComponent = Ionicons;
 
   const gig = navigation.getParam('gig', undefined);
@@ -76,13 +90,15 @@ const SingleGig = ({ navigation }) => {
 
   const deletePost = useCallback(() => {
     // add delete functionality
-  }, []);
+    deleteGig(gig.Id);
+    navigation.navigate('FindGig');
+  }, [deleteGig, gig, navigation]);
 
   return (
     <View style={styles.container}>
       <Card style={[styles.card, { backgroundColor: gig.cardColor }]}>
         <Text style={styles.cardHeader}>{gig.title}</Text>
-        {true /* add "if user owns this post"-check */ && (
+        {gig && currentUserId === gig.userId && (
           <View style={styles.closeIcon}>
             <TouchableOpacity title="" onPress={deletePost}>
               <IconComponent name="close" size={30} color="#ffffff" />
@@ -92,7 +108,7 @@ const SingleGig = ({ navigation }) => {
 
         <Text style={styles.cardUser}>
           {'Posted at '}
-          {gig.createdAt}
+          {formatDate(gig.createdAt)}
           {' '}
           by
           {gig.user}
@@ -112,6 +128,13 @@ const SingleGig = ({ navigation }) => {
       </Card>
     </View>
   );
+};
+
+SingleGig.propTypes = {
+  screenProps: PropTypes.shape({
+    deleteGig: PropTypes.func.isRequired,
+    currentUserId: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
 export default SingleGig;

@@ -49,9 +49,9 @@ Gig.propTypes = {
     gigLocation: PropTypes.string.isRequired,
     phone: PropTypes.string.isRequired,
     earnings: PropTypes.string.isRequired,
-    id: PropTypes.string.isRequired,
+    Id: PropTypes.string.isRequired,
     cardColor: PropTypes.string.isRequired,
-    createdAt: PropTypes.string.isRequired,
+    createdAt: PropTypes.instanceOf(Date).isRequired,
   }).isRequired,
 };
 
@@ -61,7 +61,7 @@ const FindGig = ({ screenProps, navigation }) => {
     <View style={styles.container}>
       <ScrollView>
         {gigs.map((g) => (
-          <Gig key={g.id} navigation={navigation} gig={g} />
+          <Gig key={g.Id} navigation={navigation} gig={g} />
         ))}
       </ScrollView>
     </View>
@@ -77,9 +77,9 @@ FindGig.propTypes = {
         gigLocation: PropTypes.string.isRequired,
         phone: PropTypes.string.isRequired,
         earnings: PropTypes.string.isRequired,
-        id: PropTypes.string.isRequired,
+        Id: PropTypes.string.isRequired,
         cardColor: PropTypes.string.isRequired,
-        createdAt: PropTypes.string.isRequired,
+        createdAt: PropTypes.instanceOf(Date).isRequired,
       }).isRequired,
     ).isRequired,
   }).isRequired,

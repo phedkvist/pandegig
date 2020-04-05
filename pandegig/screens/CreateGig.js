@@ -38,6 +38,19 @@ const styles = StyleSheet.create({
   },
 });
 
+// eslint-disable-next-line no-unused-vars
+const formatDate = () => {
+  const d = new Date();
+  let month = `${d.getMonth() + 1}`;
+  let day = `${d.getDate()}`;
+  const year = d.getFullYear();
+
+  if (month.length < 2) month = `0${month}`;
+  if (day.length < 2) day = `0${day}`;
+
+  return [year, month, day].join('-');
+};
+
 const CreateGig = ({ screenProps, navigation }) => {
   const { addGig } = screenProps;
   const [title, setTitle] = useState();
@@ -92,22 +105,10 @@ const CreateGig = ({ screenProps, navigation }) => {
       const randomColors = ['#eef9bf', '#a7e9af', '#75b79e', '#6a8caf'];
       const cardColor = randomColors[Math.floor(Math.random() * randomColors.length)];
 
-      const formatDate = () => {
-        const d = new Date();
-        let month = `${d.getMonth() + 1}`;
-        let day = `${d.getDate()}`;
-        const year = d.getFullYear();
-
-        if (month.length < 2) month = `0${month}`;
-        if (day.length < 2) day = `0${day}`;
-
-        return [year, month, day].join('-');
-      };
-
-      const createdAt = formatDate();
+      const createdAt = new Date();
 
       addGig({
-        id: v1(),
+        Id: v1(),
         title,
         description,
         gigLocation,
