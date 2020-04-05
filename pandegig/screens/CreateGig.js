@@ -156,6 +156,7 @@ const CreateGig = ({ screenProps, navigation }) => {
             multiline
             numberOfLines={4}
             placeholder="I need help with..."
+            maxLength={250}
           />
         </View>
         <View>

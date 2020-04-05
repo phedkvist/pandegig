@@ -7,12 +7,12 @@ import AppNavigator from './AppNavigator';
 const initialGigs = [
   {
     title: 'Maggan behöver hjälp',
-    description: 'adsfgagdsf',
+    description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type an.',
     earnings: '200',
     location: 'Fjollträsk',
     phone: '0731234567',
     id: v1(),
-    cardColor: '#eef9bf',
+    cardColor: '#a7e9af',
     createdAt: '2020-04-04',
   },
   {
@@ -22,7 +22,7 @@ const initialGigs = [
     location: 'Bromma',
     phone: '0731234567',
     id: v1(),
-    cardColor: '#eef9bf',
+    cardColor: '#75b79e',
     createdAt: '2020-04-05',
   },
   {
@@ -32,7 +32,7 @@ const initialGigs = [
     location: 'Nacka',
     phone: '0731234567',
     id: v1(),
-    cardColor: '#eef9bf',
+    cardColor: '#6a8caf',
     createdAt: '2020-03-06',
   },
   {
