@@ -101,7 +101,7 @@ const SingleGig = ({ screenProps, navigation }) => {
         {gig && currentUserId === gig.userId && (
           <View style={styles.closeIcon}>
             <TouchableOpacity title="" onPress={deletePost}>
-              <IconComponent name="close" size={30} color="#ffffff" />
+              <IconComponent name="delete" size={30} color="red" />
             </TouchableOpacity>
           </View>
         )}
