@@ -91,8 +91,11 @@ const CreateGig = ({ screenProps, navigation }) => {
     }
 
     if (!error) {
+      const randomColors = ['#eef9bf', '#a7e9af', '#75b79e', '#6a8caf'];
+      const cardColor = randomColors[Math.floor(Math.random() * randomColors.length)];
+
       addGig({
-        id: v1(), title, description, location, earnings, phone,
+        id: v1(), title, description, location, earnings, phone, cardColor,
       });
       setTitle('');
       setDescription('');

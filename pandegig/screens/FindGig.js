@@ -26,15 +26,10 @@ const Gig = ({ navigation, gig }) => {
   }, [navigation, gig]);
 
 
-  const randomColors = ['#eef9bf', '#a7e9af', '#75b79e', '#6a8caf'];
-
-  const getRandomColor = Math.floor(Math.random() * randomColors.length);
-
-
   return (
     <View>
       <TouchableOpacity onPress={navigateToGig}>
-        <Card style={[styles.card, { backgroundColor: randomColors[getRandomColor] }]}>
+        <Card style={[styles.card, { backgroundColor: gig.cardColor }]}>
           <Text style={styles.cardHeader}>{gig.title}</Text>
           <Text style={styles.cardText}>{gig.location}</Text>
           <Text style={styles.cardText}>{gig.earnings}</Text>
@@ -52,6 +47,7 @@ Gig.propTypes = {
     phone: PropTypes.string.isRequired,
     earnings: PropTypes.string.isRequired,
     id: PropTypes.string.isRequired,
+    cardColor: PropTypes.string.isRequired,
   }).isRequired,
 };
 
@@ -78,6 +74,7 @@ FindGig.propTypes = {
         phone: PropTypes.string.isRequired,
         earnings: PropTypes.string.isRequired,
         id: PropTypes.string.isRequired,
+        cardColor: PropTypes.string.isRequired,
       }).isRequired,
     ).isRequired,
   }).isRequired,

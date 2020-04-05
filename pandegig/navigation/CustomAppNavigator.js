@@ -12,6 +12,7 @@ const initialGigs = [
     location: 'Fjollträsk',
     phone: '0731234567',
     id: v1(),
+    cardColor: '#eef9bf',
   },
   {
     title: 'Pierkan behöver hyra \'Speed\' nu!!!',
@@ -20,6 +21,7 @@ const initialGigs = [
     location: 'Bromma',
     phone: '0731234567',
     id: v1(),
+    cardColor: '#eef9bf',
   },
   {
     title: 'Pierkan söker tinderdejt, 100spänn!',
@@ -28,6 +30,7 @@ const initialGigs = [
     location: 'Nacka',
     phone: '0731234567',
     id: v1(),
+    cardColor: '#eef9bf',
   },
   {
     title: 'Pierkan söker tinderdejt, 100spänn1!',
@@ -36,6 +39,7 @@ const initialGigs = [
     location: 'Nacka',
     phone: '0731234567',
     id: v1(),
+    cardColor: '#eef9bf',
   },
   {
     title: 'Pierkan söker tinderdejt, 100spänn2!',
@@ -44,6 +48,7 @@ const initialGigs = [
     location: 'Nacka',
     phone: '0731234567',
     id: v1(),
+    cardColor: '#eef9bf',
   },
   {
     title: 'Pierkan söker tinderdejt, 100spänn3!',
@@ -52,6 +57,7 @@ const initialGigs = [
     location: 'Nacka',
     phone: '0731234567',
     id: v1(),
+    cardColor: '#eef9bf',
   },
   {
     title: 'Pierkan söker tinderdejt, 100spänn4!',
@@ -60,6 +66,7 @@ const initialGigs = [
     location: 'Nacka',
     phone: '0731234567',
     id: v1(),
+    cardColor: '#eef9bf',
   },
   {
     title: 'Pierkan söker tinderdejt, 100spänn5!',
@@ -68,6 +75,7 @@ const initialGigs = [
     location: 'Nacka',
     phone: '0731234567',
     id: v1(),
+    cardColor: '#eef9bf',
   },
   {
     title: 'Pierkan söker tinderdejt, 100spänn6!',
@@ -76,6 +84,7 @@ const initialGigs = [
     location: 'Nacka',
     phone: '0731234567',
     id: v1(),
+    cardColor: '#eef9bf',
   },
 ];
 
