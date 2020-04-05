@@ -31,14 +31,24 @@ const initialGigs = [
 /* eslint-disable no-tabs */
 /*
 
+CHAT TABLE
+
+Columns             Type      Example
+gig_ower_user_id    string
+interested_user_id  string
+
 MESSAGES TABLE
 
 Columns 	    Type 	      Example
-messageId 	  integer 	  1001
-from_user_id 	integer 	  sender
-to_user_id 	  integer 	  receiver
+chat_id       string      string
+messageId 	  string 	    1001
+from_user_id 	string 	    sender
+to_user_id 	  string 	    receiver
 content 	    string 	    hello world
 create_at 	  timestamp 	2019-07-15 12:00:00
+
+Krävs två tabeller i dynamodb.
+Hämta alla chat
 
 */
 /* eslint-enable no-tabs */
