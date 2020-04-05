@@ -13,7 +13,7 @@ export default createStackNavigator({
   SingleGig: {
     screen: SingleGig,
     navigationOptions: () => ({
-      title: 'Single Gig',
+      title: '',
     }),
   },
 });
