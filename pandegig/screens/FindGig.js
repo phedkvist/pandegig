@@ -36,6 +36,7 @@ const Gig = ({ navigation, gig }) => {
       <TouchableOpacity onPress={navigateToGig}>
         <Card style={[styles.card, { backgroundColor: gig.cardColor }]}>
           <Text style={styles.cardHeader}>{gig.title}</Text>
+          <Text style={styles.cardText}>{gig.currentUserName}</Text>
           <Text style={styles.cardText}>{gig.gigLocation}</Text>
           <Text style={styles.cardText}>
             {gig.earnings}
@@ -57,6 +58,7 @@ Gig.propTypes = {
     Id: PropTypes.string.isRequired,
     cardColor: PropTypes.string.isRequired,
     createdAt: PropTypes.instanceOf(Date).isRequired,
+    currentUserName: PropTypes.string.isRequired,
   }).isRequired,
 };
 
