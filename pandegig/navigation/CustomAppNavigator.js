@@ -85,6 +85,7 @@ class CustomAppNavigator extends React.Component {
         },
       });
       const json = await response.json();
+      console.log('JSON: ', json)
     } catch (error) {
       console.error('Error:', error);
     }
