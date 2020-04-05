@@ -1,23 +1,56 @@
+/* eslint-disable global-require */
 import React, { useState, useCallback } from 'react';
 import {
-  View, StyleSheet, Alert, TouchableOpacity, Text,
+  View,
+  StyleSheet,
+  Alert,
+  TouchableOpacity,
+  Text,
+  Image,
 } from 'react-native';
 import Auth from '@aws-amplify/auth';
-import Button from '../components/Button';
 import Input from '../components/Input';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#2a6bcc',
     alignItems: 'center',
-    paddingTop: 50,
+    paddingTop: 10,
   },
   errorText: {
     textAlign: 'center',
     fontSize: 16,
     paddingBottom: 2,
     color: '#ff5252',
+  },
+  image: {
+    maxHeight: 250,
+    maxWidth: 250,
+    marginBottom: 10,
+  },
+  input: {
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    padding: 10,
+    width: '80%',
+    marginBottom: 10,
+  },
+  button: {
+    color: '#fff',
+    borderRadius: 10,
+    padding: 20,
+    width: '80%',
+    textAlign: 'center',
+    borderWidth: 1,
+    borderColor: '#fff',
+  },
+  buttonText: {
+    color: '#fff',
+    textAlign: 'center',
+    alignSelf: 'center',
+    fontSize: 14,
+    fontWeight: '400',
   },
 });
 
@@ -33,10 +66,11 @@ export default function SignIn({ navigation }) {
     navigation,
   ]);
 
-
   const signIn = useCallback(async () => {
     // eslint-disable-next-line no-useless-escape
-    const validateEmail = (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email));
+    const validateEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(
+      email,
+    );
     let error = false;
     if (email == null || email === '' || !validateEmail) {
       error = true;
@@ -65,6 +99,10 @@ export default function SignIn({ navigation }) {
 
   return (
     <View style={styles.container}>
+      <View>
+        <Image source={require('../assets/logo.png')} style={styles.image} />
+      </View>
+
       <Input
         value={email}
         placeholder="email@example.com"
@@ -73,6 +111,7 @@ export default function SignIn({ navigation }) {
         autoCapitalize="none"
         autoFocus
         keyboardType="email-address"
+        style={styles.input}
       />
       <Input
         value={password}
@@ -80,14 +119,25 @@ export default function SignIn({ navigation }) {
         onChange={onChangePassword}
         secureTextEntry
         autoCompleteType="password"
+        style={styles.input}
       />
-      <Button onPress={signIn}>Sign In</Button>
+      <View style={styles.button}>
+        <TouchableOpacity onPress={signIn}>
+          <Text style={styles.buttonText}>Sign In</Text>
+        </TouchableOpacity>
+      </View>
       <View>
         <Text style={styles.errorText}>{errorMessage}</Text>
       </View>
-      <TouchableOpacity onPress={onNavigateSignUp}>
-        <Text>Sign Up</Text>
-      </TouchableOpacity>
+      <View>
+        <TouchableOpacity onPress={onNavigateSignUp}>
+          <Text style={styles.buttonText}>
+            {'Don\'t'}
+            {' '}
+            have an account? Sign up here!
+          </Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
