@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import {
-  View, Text, StyleSheet, ScrollView, SafeAreaView,
+  View, Text, StyleSheet, ScrollView, SafeAreaView, Platform,
 } from 'react-native';
 import { v1 } from 'uuid';
 import Input from '../components/Input';
@@ -34,6 +34,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     paddingBottom: 2,
     color: '#ff5252',
+  },
+  droidSafeArea: {
+    flex: 1,
+    paddingTop: Platform.OS === 'android' ? 25 : 0,
   },
 });
 
@@ -139,7 +143,7 @@ const CreateGig = ({ screenProps, navigation }) => {
     <View style={styles.container}>
       <SafeAreaView>
         <ScrollView>
-          <Text style={styles.title}>Create Gig</Text>
+          <Text style={[styles.title, styles.droidSafeArea]}>Create Gig</Text>
 
           <View>
             <Text style={styles.label}>Title</Text>

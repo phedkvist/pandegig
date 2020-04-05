@@ -79,7 +79,6 @@ class CustomAppNavigator extends React.Component {
     this.setState({ gigs: [...gigs, gigBody] });
     try {
       const token = await helpers.token();
-      console.log(gigBody);
       const response = await fetch(awsUrl, {
         method: 'POST',
         body: JSON.stringify({ ...gigBody, createdAt: gig.createdAt.toString() }),
@@ -89,7 +88,7 @@ class CustomAppNavigator extends React.Component {
         },
       });
       const json = await response.json();
-      console.log('JSON RESPONSE: ', json);
+      console.log('JSON: ', json);
     } catch (error) {
       console.error('Error:', error);
     }
