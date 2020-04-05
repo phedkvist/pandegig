@@ -106,7 +106,7 @@ const CreateGig = ({ screenProps, navigation }) => {
 
   return (
     <View style={styles.container}>
-      <ScrollView style={styles.container}>
+      <ScrollView>
         <Text style={styles.title}>Create Gig</Text>
 
         <View>
