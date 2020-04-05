@@ -1,5 +1,7 @@
 import React, { useState, useCallback } from 'react';
-import { View, StyleSheet, Text, Alert } from 'react-native';
+import {
+  View, StyleSheet, Text, Alert,
+} from 'react-native';
 import Auth from '@aws-amplify/auth';
 import Button from '../components/Button';
 import Input from '../components/Input';

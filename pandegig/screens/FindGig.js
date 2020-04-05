@@ -31,7 +31,7 @@ const Gig = ({ navigation, gig }) => {
       <TouchableOpacity onPress={navigateToGig}>
         <Card style={[styles.card, { backgroundColor: gig.cardColor }]}>
           <Text style={styles.cardHeader}>{gig.title}</Text>
-          <Text style={styles.cardText}>{gig.location}</Text>
+          <Text style={styles.cardText}>{gig.gigLocation}</Text>
           <Text style={styles.cardText}>{gig.earnings}</Text>
         </Card>
       </TouchableOpacity>
@@ -43,7 +43,7 @@ Gig.propTypes = {
   gig: PropTypes.shape({
     title: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
-    location: PropTypes.string.isRequired,
+    gigLocation: PropTypes.string.isRequired,
     phone: PropTypes.string.isRequired,
     earnings: PropTypes.string.isRequired,
     id: PropTypes.string.isRequired,
@@ -70,7 +70,7 @@ FindGig.propTypes = {
       PropTypes.shape({
         title: PropTypes.string.isRequired,
         description: PropTypes.string.isRequired,
-        location: PropTypes.string.isRequired,
+        gigLocation: PropTypes.string.isRequired,
         phone: PropTypes.string.isRequired,
         earnings: PropTypes.string.isRequired,
         id: PropTypes.string.isRequired,
