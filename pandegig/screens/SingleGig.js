@@ -65,6 +65,17 @@ const styles = StyleSheet.create({
   },
 });
 
+const formatDate = (d) => {
+  let month = `${d.getMonth() + 1}`;
+  let day = `${d.getDate()}`;
+  const year = d.getFullYear();
+
+  if (month.length < 2) month = `0${month}`;
+  if (day.length < 2) day = `0${day}`;
+
+  return [year, month, day].join('-');
+};
+
 const SingleGig = ({ screenProps, navigation }) => {
   const { deleteGig, currentUserId } = screenProps;
 
@@ -79,7 +90,7 @@ const SingleGig = ({ screenProps, navigation }) => {
 
   const deletePost = useCallback(() => {
     // add delete functionality
-    deleteGig(gig.id);
+    deleteGig(gig.Id);
     navigation.navigate('FindGig');
   }, [deleteGig, gig, navigation]);
 
@@ -97,7 +108,7 @@ const SingleGig = ({ screenProps, navigation }) => {
 
         <Text style={styles.cardUser}>
           {'Posted at '}
-          {gig.createdAt}
+          {formatDate(gig.createdAt)}
           {' '}
           by
           {gig.user}

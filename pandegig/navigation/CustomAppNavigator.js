@@ -126,6 +126,7 @@ Hämta alla chat
 */
 /* eslint-enable no-tabs */
 
+const awsUrl = 'https://jbht08al65.execute-api.eu-central-1.amazonaws.com/beta/gigs';
 
 class CustomAppNavigator extends React.Component {
   static router = AppNavigator.router;
@@ -133,7 +134,7 @@ class CustomAppNavigator extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      gigs: initialGigs,
+      gigs: [],
       chat: [],
       currentUserId: undefined,
     };
@@ -144,23 +145,41 @@ class CustomAppNavigator extends React.Component {
   componentDidMount = async () => {
     const user = await Auth.currentUserInfo();
     this.setState({ currentUserId: user.id });
-    // TODO: Fetch all data including gigs and chat from server
-    // console.log(this.state.gigs[0]);
-    // this.addGig(this.state.gigs[0]);
+    this.getGigs();
   }
 
   // eslint-disable-next-line class-methods-use-this
+  async getGigs() {
+    const { gigs } = this.state;
+    try {
+      const token = await helpers.token();
+      const response = await fetch(awsUrl, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const json = await response.json();
+      const gigsRes = JSON.parse(json).Items;
+      console.log('GET GIGS RESPONSE: ', gigsRes);
+      const newGigs = gigsRes.map((g) => ({ ...g, createdAt: new Date(g.createdAt) }));
+      this.setState({ gigs: [...gigs, ...newGigs] });
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+
   async addGig(gig) {
     const { gigs, currentUserId } = this.state;
     const gigBody = { ...gig, userId: currentUserId };
     this.setState({ gigs: [...gigs, gigBody] });
-    const awsUrl = 'https://jbht08al65.execute-api.eu-central-1.amazonaws.com/beta/gigs';
     try {
       const token = await helpers.token();
       console.log(gigBody);
       const response = await fetch(awsUrl, {
         method: 'POST',
-        body: JSON.stringify(gigBody),
+        body: JSON.stringify({ ...gigBody, createdAt: gig.createdAt.toString() }),
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
@@ -173,16 +192,15 @@ class CustomAppNavigator extends React.Component {
     }
   }
 
-  async deleteGig(id) {
+  async deleteGig(Id) {
     const { gigs } = this.state;
-    const newGigs = gigs.filter((g) => g.id !== id);
+    const newGigs = gigs.filter((g) => g.Id !== Id);
     this.setState({ gigs: newGigs });
-    const awsUrl = 'https://jbht08al65.execute-api.eu-central-1.amazonaws.com/beta/gigs';
     try {
       const token = await helpers.token();
       const response = await fetch(awsUrl, {
         method: 'DELETE',
-        body: JSON.stringify({ id }),
+        body: JSON.stringify({ Id }),
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
