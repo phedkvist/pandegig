@@ -103,6 +103,7 @@ FindGig.propTypes = {
         Id: PropTypes.string.isRequired,
         cardColor: PropTypes.string.isRequired,
         createdAt: PropTypes.instanceOf(Date).isRequired,
+        currentUserName: PropTypes.string.isRequired,
       }).isRequired,
     ).isRequired,
     getGigs: PropTypes.func.isRequired,

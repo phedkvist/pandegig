@@ -39,6 +39,7 @@ class CustomAppNavigator extends React.Component {
       gigs: [],
       chat: [],
       currentUserId: undefined,
+      currentUserName: '',
     };
     this.addGig = this.addGig.bind(this);
     this.deleteGig = this.deleteGig.bind(this);
@@ -47,7 +48,8 @@ class CustomAppNavigator extends React.Component {
 
   componentDidMount = async () => {
     const user = await Auth.currentUserInfo();
-    this.setState({ currentUserId: user.id });
+    console.log('USER: ', user.attributes.name);
+    this.setState({ currentUserId: user.id, currentUserName: user.attributes.name });
     this.getGigs();
   }
 
@@ -63,7 +65,7 @@ class CustomAppNavigator extends React.Component {
       });
       const json = await response.json();
       const gigsRes = JSON.parse(json).Items;
-      console.log('GET GIGS RESPONSE: ', gigsRes);
+      // console.log('GET GIGS RESPONSE: ', gigsRes);
       const newGigsFormatted = gigsRes.map((g) => ({ ...g, createdAt: new Date(g.createdAt) }));
       this.setState({ gigs: [...newGigsFormatted] });
     } catch (error) {
@@ -72,8 +74,8 @@ class CustomAppNavigator extends React.Component {
   }
 
   async addGig(gig) {
-    const { gigs, currentUserId } = this.state;
-    const gigBody = { ...gig, userId: currentUserId };
+    const { gigs, currentUserId, currentUserName } = this.state;
+    const gigBody = { ...gig, userId: currentUserId, currentUserName };
     this.setState({ gigs: [...gigs, gigBody] });
     try {
       const token = await helpers.token();
@@ -107,8 +109,7 @@ class CustomAppNavigator extends React.Component {
           Authorization: `Bearer ${token}`,
         },
       });
-      const json = await response.json();
-      console.log('JSON RESPONSE: ', json);
+      await response.json();
     } catch (error) {
       console.error('Error:', error);
     }
@@ -120,7 +121,9 @@ class CustomAppNavigator extends React.Component {
   }
 
   render() {
-    const { gigs, chat, currentUserId } = this.state;
+    const {
+      gigs, chat, currentUserId, name,
+    } = this.state;
     const { navigation } = this.props;
 
     return (
@@ -130,6 +133,7 @@ class CustomAppNavigator extends React.Component {
           gigs,
           chat,
           currentUserId,
+          name,
           addChat: this.addChat,
           addGig: this.addGig,
           getGigs: this.getGigs,

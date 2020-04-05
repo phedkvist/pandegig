@@ -31,8 +31,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   button: {
-    width: '80%',
-    maxWidth: '80%',
+    alignItems: 'center',
   },
 });
 
@@ -156,9 +155,11 @@ export default function SignUp({ navigation }) {
               autoCompleteType="password"
             />
           </View>
-          <Button onPress={signUp} style={styles.button}>
-            Sign Up
-          </Button>
+          <View style={styles.button}>
+            <Button onPress={signUp}>
+              Sign Up
+            </Button>
+          </View>
           <View>
             <Text style={styles.errorText}>{errorMessage}</Text>
           </View>

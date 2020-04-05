@@ -109,9 +109,8 @@ const SingleGig = ({ screenProps, navigation }) => {
         <Text style={styles.cardUser}>
           {'Posted at '}
           {formatDate(gig.createdAt)}
-          {' '}
-          by
-          {gig.user}
+          {' by '}
+          {gig.currentUserName}
         </Text>
 
         <Text style={styles.cardDescription}>{gig.description}</Text>
