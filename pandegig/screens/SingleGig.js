@@ -9,6 +9,7 @@ const SingleGig = ({ navigation }) => {
       <Text>{gig.title}</Text>
       <Text>{gig.description}</Text>
       <Text>{gig.location}</Text>
+      <Text>{gig.phone}</Text>
       <Text>{gig.earnings}</Text>
     </View>
   );
