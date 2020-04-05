@@ -109,7 +109,6 @@ export default function SignIn({ navigation }) {
         onChange={onChangeEmail}
         autoCompleteType="email"
         autoCapitalize="none"
-        autoFocus
         keyboardType="email-address"
         style={styles.input}
       />

@@ -10,14 +10,29 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    paddingTop: 50,
   },
   errorText: {
     textAlign: 'center',
     fontSize: 16,
     paddingBottom: 2,
     color: '#ff5252',
+  },
+  label: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: 'gray',
+    marginTop: 10,
+    marginLeft: '3%',
+  },
+  input: {
+    borderRadius: 10,
+    padding: 10,
+    width: '80%',
+    marginBottom: 10,
+  },
+  button: {
+    width: '80%',
+    maxWidth: '80%',
   },
 });
 
@@ -39,9 +54,11 @@ export default function SignUp({ navigation }) {
   const onChangeAuthCode = useCallback((a) => setAuthCode(a), []);
 
   const signUp = useCallback(async () => {
-    const validPassword = (password.length > 5 && password === repeatPassword);
+    const validPassword = password.length > 5 && password === repeatPassword;
     // eslint-disable-next-line no-useless-escape
-    const validateEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);
+    const validateEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(
+      email,
+    );
 
     let error = false;
     if (email == null || email === '' || !validateEmail) {
@@ -99,35 +116,49 @@ export default function SignUp({ navigation }) {
     <View style={styles.container}>
       {!confirmDialog && (
         <>
-          <Input
-            value={name}
-            placeholder="Name"
-            onChange={onChangeName}
-            autoFocus
-          />
-          <Input
-            value={email}
-            placeholder="email@example.com"
-            onChange={onChangeEmail}
-            autoCapitalize="none"
-            autoCompleteType="email"
-            keyboardType="email-address"
-          />
-          <Input
-            value={password}
-            placeholder="password"
-            onChange={onChangePassword}
-            secureTextEntry
-            autoCompleteType="password"
-          />
-          <Input
-            value={repeatPassword}
-            placeholder="Repeat password"
-            onChange={onChangeRepeatPassword}
-            secureTextEntry
-            autoCompleteType="password"
-          />
-          <Button onPress={signUp}>Sign Up</Button>
+          <View>
+            <Text style={styles.label}>Name</Text>
+            <Input
+              value={name}
+              placeholder="Dwayne Johnson"
+              onChange={onChangeName}
+              autoFocus
+            />
+          </View>
+          <View>
+            <Text style={styles.label}>Email</Text>
+            <Input
+              value={email}
+              placeholder="email@example.com"
+              onChange={onChangeEmail}
+              autoCapitalize="none"
+              autoCompleteType="email"
+              keyboardType="email-address"
+            />
+          </View>
+          <View>
+            <Text style={styles.label}>Password</Text>
+            <Input
+              value={password}
+              placeholder="******"
+              onChange={onChangePassword}
+              secureTextEntry
+              autoCompleteType="password"
+            />
+          </View>
+          <View>
+            <Text style={styles.label}>Title</Text>
+            <Input
+              value={repeatPassword}
+              placeholder="******"
+              onChange={onChangeRepeatPassword}
+              secureTextEntry
+              autoCompleteType="password"
+            />
+          </View>
+          <Button onPress={signUp} style={styles.button}>
+            Sign Up
+          </Button>
           <View>
             <Text style={styles.errorText}>{errorMessage}</Text>
           </View>
@@ -137,6 +168,7 @@ export default function SignUp({ navigation }) {
         <>
           <Input
             value={authCode}
+            style={styles.input}
             placeholder="XXX"
             onChange={onChangeAuthCode}
           />

@@ -21,7 +21,14 @@ export default createStackNavigator({
     screen: SignUp,
     navigationOptions: () => ({
       title: '',
-      headerStyle: { backgroundColor: '#2a6bcc', borderColor: '#2a6bcc' },
+      headerStyle: {
+        backgroundColor: '#fff',
+        borderBottomColor: '#2a6bcc',
+        shadowColor: 'transparent',
+        borderBottomWidth: 0,
+        elevation: 0,
+      },
+
     }),
   },
 });
