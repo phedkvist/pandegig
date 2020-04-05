@@ -7,7 +7,6 @@ import { v1 } from 'uuid';
 import Input from '../components/Input';
 import Button from '../components/Button';
 
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -65,7 +64,6 @@ const CreateGig = ({ screenProps, navigation }) => {
     [setPhone],
   );
 
-
   const onPressCreateGig = useCallback(() => {
     let error = false;
     if (title == null || title === '') {
@@ -82,7 +80,7 @@ const CreateGig = ({ screenProps, navigation }) => {
       setErrorMessage('You must type in earnings!');
     } else if (earnings === 0) {
       error = true;
-      setErrorMessage('Earnings can\'t be below 0!');
+      setErrorMessage("Earnings can't be below 0!");
     } else if (earnings === undefined || earnings == null) {
       error = true;
       setErrorMessage('You must enter a phone number!');
@@ -94,8 +92,29 @@ const CreateGig = ({ screenProps, navigation }) => {
       const randomColors = ['#eef9bf', '#a7e9af', '#75b79e', '#6a8caf'];
       const cardColor = randomColors[Math.floor(Math.random() * randomColors.length)];
 
+      const formatDate = () => {
+        const d = new Date();
+        let month = `${d.getMonth() + 1}`;
+        let day = `${d.getDate()}`;
+        const year = d.getFullYear();
+
+        if (month.length < 2) month = `0${month}`;
+        if (day.length < 2) day = `0${day}`;
+
+        return [year, month, day].join('-');
+      };
+
+      const createdAt = formatDate();
+
       addGig({
-        id: v1(), title, description, location, earnings, phone, cardColor,
+        id: v1(),
+        title,
+        description,
+        location,
+        earnings,
+        phone,
+        cardColor,
+        createdAt,
       });
       setTitle('');
       setDescription('');
@@ -105,7 +124,16 @@ const CreateGig = ({ screenProps, navigation }) => {
       navigation.navigate('FindGig');
     }
     return errorMessage;
-  }, [errorMessage, description, title, location, earnings, addGig, navigation, phone]);
+  }, [
+    errorMessage,
+    description,
+    title,
+    location,
+    earnings,
+    addGig,
+    navigation,
+    phone,
+  ]);
 
   return (
     <View style={styles.container}>
@@ -164,9 +192,7 @@ const CreateGig = ({ screenProps, navigation }) => {
           </View>
         </View>
         <View>
-          <Text style={styles.errorText}>
-            {errorMessage}
-          </Text>
+          <Text style={styles.errorText}>{errorMessage}</Text>
         </View>
       </ScrollView>
     </View>

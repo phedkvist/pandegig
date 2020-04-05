@@ -11,6 +11,10 @@ const SingleGig = ({ navigation }) => {
       <Text>{gig.location}</Text>
       <Text>{gig.phone}</Text>
       <Text>{gig.earnings}</Text>
+      <Text>
+        Posted at:
+        {gig.createdAt}
+      </Text>
     </View>
   );
 };

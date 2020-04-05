@@ -13,6 +13,7 @@ const initialGigs = [
     phone: '0731234567',
     id: v1(),
     cardColor: '#eef9bf',
+    createdAt: '2020-04-04',
   },
   {
     title: 'Pierkan behöver hyra \'Speed\' nu!!!',
@@ -22,6 +23,7 @@ const initialGigs = [
     phone: '0731234567',
     id: v1(),
     cardColor: '#eef9bf',
+    createdAt: '2020-04-05',
   },
   {
     title: 'Pierkan söker tinderdejt, 100spänn!',
@@ -31,6 +33,7 @@ const initialGigs = [
     phone: '0731234567',
     id: v1(),
     cardColor: '#eef9bf',
+    createdAt: '2020-03-06',
   },
   {
     title: 'Pierkan söker tinderdejt, 100spänn1!',
@@ -40,6 +43,7 @@ const initialGigs = [
     phone: '0731234567',
     id: v1(),
     cardColor: '#eef9bf',
+    createdAt: '2020-04-05',
   },
   {
     title: 'Pierkan söker tinderdejt, 100spänn2!',
@@ -49,6 +53,7 @@ const initialGigs = [
     phone: '0731234567',
     id: v1(),
     cardColor: '#eef9bf',
+    createdAt: '2020-04-05',
   },
   {
     title: 'Pierkan söker tinderdejt, 100spänn3!',
@@ -58,6 +63,7 @@ const initialGigs = [
     phone: '0731234567',
     id: v1(),
     cardColor: '#eef9bf',
+    createdAt: '2020-04-05',
   },
   {
     title: 'Pierkan söker tinderdejt, 100spänn4!',
@@ -67,6 +73,7 @@ const initialGigs = [
     phone: '0731234567',
     id: v1(),
     cardColor: '#eef9bf',
+    createdAt: '2020-04-05',
   },
   {
     title: 'Pierkan söker tinderdejt, 100spänn5!',
@@ -76,6 +83,7 @@ const initialGigs = [
     phone: '0731234567',
     id: v1(),
     cardColor: '#eef9bf',
+    createdAt: '2020-04-05',
   },
   {
     title: 'Pierkan söker tinderdejt, 100spänn6!',
@@ -85,6 +93,7 @@ const initialGigs = [
     phone: '0731234567',
     id: v1(),
     cardColor: '#eef9bf',
+    createdAt: '2020-04-05',
   },
 ];
 

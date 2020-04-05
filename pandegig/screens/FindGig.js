@@ -48,6 +48,7 @@ Gig.propTypes = {
     earnings: PropTypes.string.isRequired,
     id: PropTypes.string.isRequired,
     cardColor: PropTypes.string.isRequired,
+    createdAt: PropTypes.string.isRequired,
   }).isRequired,
 };
 
@@ -75,6 +76,7 @@ FindGig.propTypes = {
         earnings: PropTypes.string.isRequired,
         id: PropTypes.string.isRequired,
         cardColor: PropTypes.string.isRequired,
+        createdAt: PropTypes.string.isRequired,
       }).isRequired,
     ).isRequired,
   }).isRequired,
