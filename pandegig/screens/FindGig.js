@@ -32,7 +32,10 @@ const Gig = ({ navigation, gig }) => {
         <Card style={[styles.card, { backgroundColor: gig.cardColor }]}>
           <Text style={styles.cardHeader}>{gig.title}</Text>
           <Text style={styles.cardText}>{gig.location}</Text>
-          <Text style={styles.cardText}>{gig.earnings}</Text>
+          <Text style={styles.cardText}>
+            {gig.earnings}
+            {' kr'}
+          </Text>
         </Card>
       </TouchableOpacity>
     </View>

@@ -4,13 +4,19 @@ import {
 } from 'react-native';
 import { Card } from 'react-native-shadow-cards';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import Ionicons from 'react-native-vector-icons/MaterialIcons';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
   card: {
-    padding: 10, margin: 10, minHeight: '70%',
+    padding: 10,
+    margin: 10,
+    minHeight: '70%',
+  },
+  icons: {
+    color: '#ff5252',
   },
   cardHeader: {
     fontSize: 16,
@@ -50,9 +56,16 @@ const styles = StyleSheet.create({
     left: 10,
     bottom: 0,
   },
+  closeIcon: {
+    position: 'absolute',
+    right: 10,
+    top: 5,
+  },
 });
 
 const SingleGig = ({ navigation }) => {
+  const IconComponent = Ionicons;
+
   const gig = navigation.getParam('gig', undefined);
   // TODO: add gig.user
 
@@ -60,10 +73,22 @@ const SingleGig = ({ navigation }) => {
     Linking.openURL(`tel:${gig.phone}`);
   }, [gig]);
 
+  const deletePost = useCallback(() => {
+    // add delete functionality
+  }, []);
+
   return (
     <View style={styles.container}>
       <Card style={[styles.card, { backgroundColor: gig.cardColor }]}>
         <Text style={styles.cardHeader}>{gig.title}</Text>
+        {true /* add "if user owns this post"-check */ && (
+          <View style={styles.closeIcon}>
+            <TouchableOpacity title="" onPress={deletePost}>
+              <IconComponent name="close" size={30} color="#ffffff" />
+            </TouchableOpacity>
+          </View>
+        )}
+
         <Text style={styles.cardUser}>
           {'Posted at '}
           {gig.createdAt}
