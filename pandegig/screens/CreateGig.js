@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import {
-  View, Text, StyleSheet, ScrollView,
+  View, Text, StyleSheet, ScrollView, SafeAreaView,
 } from 'react-native';
 import { v1 } from 'uuid';
 import Input from '../components/Input';
@@ -16,7 +16,6 @@ const styles = StyleSheet.create({
     fontWeight: '800',
     color: 'gray',
     textTransform: 'uppercase',
-    marginTop: 30,
     marginBottom: 20,
     textAlign: 'center',
   },
@@ -138,66 +137,68 @@ const CreateGig = ({ screenProps, navigation }) => {
 
   return (
     <View style={styles.container}>
-      <ScrollView>
-        <Text style={styles.title}>Create Gig</Text>
+      <SafeAreaView>
+        <ScrollView>
+          <Text style={styles.title}>Create Gig</Text>
 
-        <View>
-          <Text style={styles.label}>Title</Text>
-          <Input
-            value={title}
-            placeholder="Send food"
-            onChange={onChangeTitle}
-            maxLength={34}
-          />
-        </View>
-        <View>
-          <Text style={styles.label}>Describe the Gig</Text>
-          <Input
-            value={description}
-            onChange={onChangeDescription}
-            multiline
-            numberOfLines={4}
-            placeholder="I need help with..."
-            maxLength={250}
-          />
-        </View>
-        <View>
-          <Text style={styles.label}>Phone number</Text>
-          <Input
-            value={phone}
-            placeholder="0701234567"
-            onChange={onChangePhone}
-            keyboardType="numeric"
-            maxLength={10}
-          />
-        </View>
-        <View>
-          <Text style={styles.label}>Location</Text>
-          <Input
-            value={gigLocation}
-            placeholder="Drottninggatan 3"
-            onChange={onChangeGigLocation}
-          />
-        </View>
-        <View>
-          <Text style={styles.label}>Earnings</Text>
-          <Input
-            value={earnings}
-            placeholder="100kr"
-            onChange={onChangeEarnings}
-            keyboardType="numeric"
-          />
-        </View>
-
-        <View>
-          <View style={styles.button}>
-            <Button onPress={onPressCreateGig}>Post Gig</Button>
+          <View>
+            <Text style={styles.label}>Title</Text>
+            <Input
+              value={title}
+              placeholder="Send food"
+              onChange={onChangeTitle}
+              maxLength={34}
+            />
           </View>
-        </View>
-        <View>
-          <Text style={styles.errorText}>{errorMessage}</Text>
-        </View>
-      </ScrollView>
+          <View>
+            <Text style={styles.label}>Describe the Gig</Text>
+            <Input
+              value={description}
+              onChange={onChangeDescription}
+              multiline
+              numberOfLines={4}
+              placeholder="I need help with..."
+              maxLength={250}
+            />
+          </View>
+          <View>
+            <Text style={styles.label}>Phone number</Text>
+            <Input
+              value={phone}
+              placeholder="0701234567"
+              onChange={onChangePhone}
+              keyboardType="numeric"
+              maxLength={10}
+            />
+          </View>
+          <View>
+            <Text style={styles.label}>Location</Text>
+            <Input
+              value={gigLocation}
+              placeholder="Drottninggatan 3"
+              onChange={onChangeGigLocation}
+            />
+          </View>
+          <View>
+            <Text style={styles.label}>Earnings</Text>
+            <Input
+              value={earnings}
+              placeholder="100kr"
+              onChange={onChangeEarnings}
+              keyboardType="numeric"
+            />
+          </View>
+
+          <View>
+            <View style={styles.button}>
+              <Button onPress={onPressCreateGig}>Post Gig</Button>
+            </View>
+          </View>
+          <View>
+            <Text style={styles.errorText}>{errorMessage}</Text>
+          </View>
+        </ScrollView>
+      </SafeAreaView>
     </View>
   );
 };
