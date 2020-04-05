@@ -42,7 +42,7 @@ const CreateGig = ({ screenProps, navigation }) => {
   const { addGig } = screenProps;
   const [title, setTitle] = useState();
   const [description, setDescription] = useState();
-  const [location, setLocation] = useState();
+  const [gigLocation, setGigLocation] = useState();
   const [phone, setPhone] = useState();
   const [earnings, setEarnings] = useState();
   const [errorMessage, setErrorMessage] = useState('');
@@ -51,8 +51,8 @@ const CreateGig = ({ screenProps, navigation }) => {
   const onChangeDescription = useCallback((text) => setDescription(text), [
     setDescription,
   ]);
-  const onChangeLocation = useCallback((text) => setLocation(text), [
-    setLocation,
+  const onChangeGigLocation = useCallback((text) => setGigLocation(text), [
+    setGigLocation,
   ]);
   const onChangeEarnings = useCallback(
     (text) => setEarnings(text.replace(/[^0-9]/g, '')),
@@ -72,9 +72,9 @@ const CreateGig = ({ screenProps, navigation }) => {
     } else if (description == null || description === '') {
       error = true;
       setErrorMessage('You must give a description!');
-    } else if (location == null || location === '') {
+    } else if (gigLocation == null || gigLocation === '') {
       error = true;
-      setErrorMessage('You must specify a location!');
+      setErrorMessage('You must specify a gigLocation!');
     } else if (earnings === undefined || earnings == null) {
       error = true;
       setErrorMessage('You must type in earnings!');
@@ -110,7 +110,7 @@ const CreateGig = ({ screenProps, navigation }) => {
         id: v1(),
         title,
         description,
-        location,
+        gigLocation,
         earnings,
         phone,
         cardColor,
@@ -118,7 +118,7 @@ const CreateGig = ({ screenProps, navigation }) => {
       });
       setTitle('');
       setDescription('');
-      setLocation('');
+      setGigLocation('');
       setEarnings('');
       setPhone('');
       navigation.navigate('FindGig');
@@ -128,7 +128,7 @@ const CreateGig = ({ screenProps, navigation }) => {
     errorMessage,
     description,
     title,
-    location,
+    gigLocation,
     earnings,
     addGig,
     navigation,
@@ -172,9 +172,9 @@ const CreateGig = ({ screenProps, navigation }) => {
         <View>
           <Text style={styles.label}>Location</Text>
           <Input
-            value={location}
+            value={gigLocation}
             placeholder="Drottninggatan 3"
-            onChange={onChangeLocation}
+            onChange={onChangeGigLocation}
           />
         </View>
         <View>

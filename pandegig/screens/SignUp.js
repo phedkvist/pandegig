@@ -1,5 +1,7 @@
 import React, { useState, useCallback } from 'react';
-import { View, StyleSheet, Text, Alert } from 'react-native';
+import {
+  View, StyleSheet, Text, Alert,
+} from 'react-native';
 import Auth from '@aws-amplify/auth';
 import Button from '../components/Button';
 import Input from '../components/Input';
@@ -44,11 +46,11 @@ export default function SignUp({ navigation }) {
     let error = false;
     if (email == null || email === '' || !validateEmail) {
       error = true;
-      setErrorMessage('You must enter you email!');
-    } else if (password == null || password === '' || validPassword) {
+      setErrorMessage('You must enter your email!');
+    } else if (!password || password === '' || !validPassword) {
       error = true;
       setErrorMessage('You must enter your password!');
-    } else if (name == null || name === '') {
+    } else if (!name || name === '') {
       error = true;
       setErrorMessage('You must enter your name!');
     } else if (password !== repeatPassword) {
