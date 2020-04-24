@@ -2,7 +2,7 @@ import React from 'react';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import Ionicons from 'react-native-vector-icons/MaterialIcons';
 import Settings from '../screens/Settings';
-import CreateGig from '../screens/CreateGig';
+import ChatNavigator from './ChatNavigator';
 import GigNavigator from './GigNavigator';
 
 export default createBottomTabNavigator(
@@ -10,11 +10,8 @@ export default createBottomTabNavigator(
     Gigs: {
       screen: GigNavigator,
     },
-    CreateGig: {
-      screen: CreateGig,
-      navigationOptions: () => ({
-        title: 'Create a Gig',
-      }),
+    Chat: {
+      screen: ChatNavigator,
     },
     Settings: {
       screen: Settings,
@@ -35,8 +32,8 @@ export default createBottomTabNavigator(
           // IconComponent = HomeIconWithBadge;
         } else if (routeName === 'Settings') {
           iconName = 'settings';
-        } else if (routeName === 'CreateGig') {
-          iconName = 'add-circle';
+        } else if (routeName === 'Chat') {
+          iconName = 'chat';
         } else if (routeName === 'Gigs') {
           iconName = 'dashboard';
         }
