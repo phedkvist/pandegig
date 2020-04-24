@@ -6,6 +6,7 @@ import {
 import { v1 } from 'uuid';
 import Input from '../components/Input';
 import Button from '../components/Button';
+import LocationList from '../components/LocationList';
 
 const styles = StyleSheet.create({
   container: {
@@ -60,6 +61,8 @@ const CreateGig = ({ screenProps, navigation }) => {
   const [title, setTitle] = useState();
   const [description, setDescription] = useState();
   const [gigLocation, setGigLocation] = useState();
+  const [locations, setLocations] = useState();
+  const [location, setLocation] = useState();
   const [phone, setPhone] = useState();
   const [earnings, setEarnings] = useState();
   const [errorMessage, setErrorMessage] = useState('');
@@ -68,12 +71,33 @@ const CreateGig = ({ screenProps, navigation }) => {
   const onChangeDescription = useCallback((text) => setDescription(text), [
     setDescription,
   ]);
-  const onChangeGigLocation = useCallback((text) => setGigLocation(text), [
+  const onChangeGigLocation = useCallback((text) => { 
+    setGigLocation(text) 
+    console.log("text", text)
+    let url = `https://nominatim.openstreetmap.org/search/${text}?format=json`;
+    console.log(url)
+    fetch(url)
+    .then(response => {
+      return response.json();
+    })
+    .then(locations => {
+      setLocations(locations)
+    })
+  }, [
     setGigLocation,
+    setLocations
   ]);
   const onChangeEarnings = useCallback(
     (text) => setEarnings(text.replace(/[^0-9]/g, '')),
     [setEarnings],
+  );
+  const onSelectLocation = useCallback(
+    (location) => {
+      setLocation(location)
+      setGigLocation(location.display_name)
+      setLocations([])
+    },
+    [setLocation, setLocations],
   );
 
   const onChangePhone = useCallback(
@@ -83,22 +107,26 @@ const CreateGig = ({ screenProps, navigation }) => {
 
   const onPressCreateGig = useCallback(() => {
     let error = false;
-    if (title == null || title === '') {
+
+    if (!title) {
       error = true;
       setErrorMessage('You must give a title!');
-    } else if (description == null || description === '') {
+    } else if (!description) {
       error = true;
       setErrorMessage('You must give a description!');
-    } else if (gigLocation == null || gigLocation === '') {
+    } else if (!gigLocation) {
       error = true;
       setErrorMessage('You must specify a gigLocation!');
-    } else if (earnings === undefined || earnings == null) {
+    } else if (!location) {
+      error = true;
+      setErrorMessage('You must select a location!');
+    } else if (!earnings) {
       error = true;
       setErrorMessage('You must type in earnings!');
-    } else if (earnings === 0) {
+    } else if (!earnings) {
       error = true;
       setErrorMessage("Earnings can't be below 0!");
-    } else if (earnings === undefined || earnings == null) {
+    } else if (!phone) {
       error = true;
       setErrorMessage('You must enter a phone number!');
     } else {
@@ -108,7 +136,7 @@ const CreateGig = ({ screenProps, navigation }) => {
     if (!error) {
       const randomColors = ['#eef9bf', '#a7e9af', '#75b79e', '#6a8caf'];
       const cardColor = randomColors[Math.floor(Math.random() * randomColors.length)];
-
+      
       const createdAt = new Date();
 
       addGig({
@@ -116,6 +144,8 @@ const CreateGig = ({ screenProps, navigation }) => {
         title,
         description,
         gigLocation,
+        latitude: location.lat,
+        longitude: location.lon,
         earnings,
         phone,
         cardColor,
@@ -183,6 +213,10 @@ const CreateGig = ({ screenProps, navigation }) => {
               onChange={onChangeGigLocation}
             />
           </View>
+          <LocationList
+            locations={locations} 
+            onSelected={onSelectLocation} 
+          />
           <View>
             <Text style={styles.label}>Earnings</Text>
             <Input
@@ -192,7 +226,6 @@ const CreateGig = ({ screenProps, navigation }) => {
               keyboardType="numeric"
             />
           </View>
-
           <View>
             <View style={styles.button}>
               <Button onPress={onPressCreateGig}>Post Gig</Button>
