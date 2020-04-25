@@ -8,6 +8,7 @@ const styles = StyleSheet.create({
     height: 50,
     marginTop: '5%',
     backgroundColor: 'beige',
+    borderRadius: 10,
     padding: '3%',
     width: '100%',
     borderColor: 'lightgray',
@@ -26,7 +27,7 @@ const Location = ({ location, onSelected }) => {
       style={{ ...styles.listElement }}
       onPress={onSelectionCallback}
     >
-      <Text>{location.display_name}</Text>
+      <Text>{location.place_name}</Text>
     </TouchableOpacity>
   );
 };
