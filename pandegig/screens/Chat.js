@@ -13,90 +13,105 @@ const MESSAGES = [
     createdAt: new Date("April 24, 2020 11:13:00"),
     status: 'READ',
     fromUserId: 'a',
+    id: '1',
   },
   {
     content: "Det är bra, sj?",
     createdAt: new Date("April 24, 2020 11:15:00"),
     status: 'READ',
     fromUserId: 'b',
+    id: '2',
   },
   {
     content: "Det är bra",
     createdAt: new Date("April 24, 2020 11:18:00"),
     status: 'READ',
     fromUserId: 'a',
+    id: '3',
   },
   {
     content: "Hej hur är läget",
     createdAt: new Date("April 24, 2020 11:13:00"),
     status: 'READ',
     fromUserId: 'a',
+    id: '4',
   },
   {
     content: "Det är bra, sj?",
     createdAt: new Date("April 24, 2020 11:15:00"),
     status: 'READ',
     fromUserId: 'b',
+    id: '4.4',
   },
   {
     content: "Det är bra",
     createdAt: new Date("April 24, 2020 11:18:00"),
     status: 'READ',
     fromUserId: 'a',
+    id: '5',
   },
   {
     content: "Hej hur är läget",
     createdAt: new Date("April 24, 2020 11:13:00"),
     status: 'READ',
     fromUserId: 'a',
+    id: '6',
   },
   {
     content: "Det är bra, sj?",
     createdAt: new Date("April 24, 2020 11:15:00"),
     status: 'READ',
     fromUserId: 'b',
+    id: '7',
   },
   {
     content: "Det är bra",
     createdAt: new Date("April 24, 2020 11:18:00"),
     status: 'READ',
     fromUserId: 'a',
+    id: '8',
   },
   {
     content: "Hej hur är läget",
     createdAt: new Date("April 24, 2020 11:13:00"),
     status: 'READ',
     fromUserId: 'a',
+    id: '8.5',
   },
   {
     content: "Det är bra, sj?",
     createdAt: new Date("April 24, 2020 11:15:00"),
     status: 'READ',
     fromUserId: 'b',
+    id: '9',
   },
   {
     content: "Det är bra",
     createdAt: new Date("April 24, 2020 11:18:00"),
     status: 'READ',
     fromUserId: 'a',
+    id: '10',
   },
   {
     content: "Hej hur är läget",
     createdAt: new Date("April 24, 2020 11:13:00"),
     status: 'READ',
     fromUserId: 'a',
+    id: '11',
   },
   {
     content: "Det är bra, sj?",
     createdAt: new Date("April 24, 2020 11:15:00"),
     status: 'READ',
     fromUserId: 'b',
+    id: '12',
   },
   {
     content: "Det är bra",
     createdAt: new Date("April 24, 2020 11:18:00"),
     status: 'READ',
     fromUserId: 'a',
+    id: '13',
   },
 ];
 
@@ -160,7 +175,13 @@ const Chat = ({ navigation, messages = MESSAGES }) => {
           <ScrollView style={styles.messageContainer}>
             {
               messages.map(c =>
-                <Message content={c.content} createdAt={c.createAt} status={c.status} isRecieved={c.fromUserId === 'a'} />
+                <Message
+                  content={c.content}
+                  createdAt={c.createAt}
+                  status={c.status}
+                  isRecieved={c.fromUserId === 'a'}
+                  key={c.id}
+                />
               )
             }
           </ScrollView>

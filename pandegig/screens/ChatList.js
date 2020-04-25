@@ -57,61 +57,73 @@ const CHAT_LIST = [
     name: 'Peter Forsberg',
     avatar: 'PH',
     lastActive: new Date('2020-04-20'),
+    id: '1',
   },
   {
     name: 'Peter Forsberg',
     avatar: 'PH',
     lastActive: new Date('2020-04-20'),
+    id: '2',
   },
   {
     name: 'Peter Forsberg',
     avatar: 'PH',
     lastActive: new Date('2020-04-20'),
+    id: '3',
   },
   {
     name: 'Peter Forsberg',
     avatar: 'PH',
     lastActive: new Date('2020-04-20'),
+    id: '4',
   },
   {
     name: 'Peter Forsberg',
     avatar: 'PH',
     lastActive: new Date('2020-04-20'),
+    id: '5',
   },
   {
     name: 'Peter Forsberg',
     avatar: 'PH',
     lastActive: new Date('2020-04-20'),
+    id: '6',
   },
   {
     name: 'Peter Forsberg',
     avatar: 'PH',
     lastActive: new Date('2020-04-20'),
+    id: '7',
   },
   {
     name: 'Peter Forsberg',
     avatar: 'PH',
     lastActive: new Date('2020-04-20'),
+    id: '8',
   },
   {
     name: 'Peter Forsberg',
     avatar: 'PH',
     lastActive: new Date('2020-04-20'),
+    id: '9',
   },
   {
     name: 'Peter Forsberg',
     avatar: 'PH',
     lastActive: new Date('2020-04-20'),
+    id: '10',
   },
   {
     name: 'Peter Forsberg',
     avatar: 'PH',
     lastActive: new Date('2020-04-20'),
+    id: '11',
   },
   {
     name: 'Peter Forsberg',
     avatar: 'PH',
     lastActive: new Date('2020-04-20'),
+    id: '12',
   }
 ];
 
@@ -144,7 +156,7 @@ const ChatList = ({ navigation, chatList = CHAT_LIST }) => {
       >
         {chatList.map(c => (
           <TouchableOpacity
-            key={c}
+            key={c.id}
             style={styles.item}
             onPress={() => navigation.navigate('Chat', { chat: c, name: c.name })}
           >
