@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { Card } from 'react-native-shadow-cards';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/MaterialIcons';
+import Button from '../components/Button';
 
 const styles = StyleSheet.create({
   container: {
@@ -77,12 +78,9 @@ const formatDate = (d) => {
 };
 
 const SingleGig = ({ screenProps, navigation }) => {
-  const { deleteGig, currentUserId } = screenProps;
-
+  const { deleteGig, currentUserId, createConversation } = screenProps;
   const IconComponent = Ionicons;
-
   const gig = navigation.getParam('gig', undefined);
-  // TODO: add gig.user
 
   const makeCall = useCallback(() => {
     Linking.openURL(`tel:${gig.phone}`);
@@ -93,6 +91,11 @@ const SingleGig = ({ screenProps, navigation }) => {
     deleteGig(gig.Id);
     navigation.navigate('FindGig');
   }, [deleteGig, gig, navigation]);
+
+  const onAcceptGig = useCallback(() => {
+    const { userId, Id, title } = gig;
+    createConversation(Id, userId, title, `I accept the gig of ${title}`);
+  }, [gig, navigation, createConversation]);
 
   return (
     <View style={styles.container}>
@@ -125,6 +128,11 @@ const SingleGig = ({ screenProps, navigation }) => {
           {' kr'}
         </Text>
       </Card>
+      {gig && currentUserId !== gig.userId && (
+        <Button onPress={onAcceptGig}>
+          Accept Gig
+        </Button>
+      )}
     </View>
   );
 };
@@ -133,6 +141,7 @@ SingleGig.propTypes = {
   screenProps: PropTypes.shape({
     deleteGig: PropTypes.func.isRequired,
     currentUserId: PropTypes.string.isRequired,
+    createConversation: PropTypes.func.isRequired,
   }).isRequired,
 };
 

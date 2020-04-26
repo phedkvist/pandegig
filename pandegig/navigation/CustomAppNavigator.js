@@ -2,33 +2,14 @@ import React from 'react';
 import Auth from '@aws-amplify/auth';
 import AppNavigator from './AppNavigator';
 import helpers from '../helpers';
+import { v1 } from 'uuid';
 
-/* eslint-disable no-tabs */
-/*
 
-CHAT TABLE
-
-Columns             Type      Example
-gig_ower_user_id    string    asdga-sdfasd-fasdas
-interested_user_id  string    dsfad1-dafas-adsfas
-
-MESSAGES TABLE
-
-Columns 	    Type 	      Example
-chat_id       string      string
-messageId 	  string 	    12wafa-afsdf-asdffa
-from_user_id 	string 	    dsfad1-dafas-adsfas
-to_user_id 	  string 	    asdga-sdfasd-fasdas
-content 	    string 	    hello world
-create_at 	  timestamp 	2019-07-15 12:00:00
-
-Krävs två tabeller i dynamodb.
-Hämta alla chat
-
-*/
-/* eslint-enable no-tabs */
-
-const awsUrl = 'https://jbht08al65.execute-api.eu-central-1.amazonaws.com/beta/gigs';
+// AWS API Gateway Endpoints
+const GIGS_URL = 'https://jbht08al65.execute-api.eu-central-1.amazonaws.com/beta/gigs';
+const CONVERSATION_URL = 'https://jbht08al65.execute-api.eu-central-1.amazonaws.com/beta/conversation';
+const CONVERSATION_MESSAGE_URL = 'https://jbht08al65.execute-api.eu-central-1.amazonaws.com/beta/conversation/message';
+const CONVERSATIONS_URL = 'https://jbht08al65.execute-api.eu-central-1.amazonaws.com/beta/conversations';
 
 class CustomAppNavigator extends React.Component {
   static router = AppNavigator.router;
@@ -44,19 +25,21 @@ class CustomAppNavigator extends React.Component {
     this.addGig = this.addGig.bind(this);
     this.deleteGig = this.deleteGig.bind(this);
     this.getGigs = this.getGigs.bind(this);
+    this.createConversation = this.createConversation.bind(this);
+    this.getConversations = this.getConversations.bind(this);
   }
 
   componentDidMount = async () => {
     const user = await Auth.currentUserInfo();
-    console.log('USER: ', user.attributes.name);
-    this.setState({ currentUserId: user.id, currentUserName: user.attributes.name });
-    this.getGigs();
+    this.setState({ currentUserId: user.username, currentUserName: user.attributes.name });
+    // this.getGigs();
+    this.getConversations();
   }
 
   async getGigs() {
     try {
       const token = await helpers.token();
-      const response = await fetch(awsUrl, {
+      const response = await fetch(GIGS_URL, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -79,7 +62,7 @@ class CustomAppNavigator extends React.Component {
     this.setState({ gigs: [...gigs, gigBody] });
     try {
       const token = await helpers.token();
-      const response = await fetch(awsUrl, {
+      const response = await fetch(GIGS_URL, {
         method: 'POST',
         body: JSON.stringify({ ...gigBody, createdAt: gig.createdAt.toString() }),
         headers: {
@@ -100,7 +83,7 @@ class CustomAppNavigator extends React.Component {
     this.setState({ gigs: newGigs });
     try {
       const token = await helpers.token();
-      const response = await fetch(awsUrl, {
+      const response = await fetch(GIGS_URL, {
         method: 'DELETE',
         body: JSON.stringify({ Id }),
         headers: {
@@ -113,10 +96,74 @@ class CustomAppNavigator extends React.Component {
       console.error('Error:', error);
     }
   }
-
+  /*
+      Users
+      ------
+      cognitoId
+      name
+      id
+      registered
+              
+      Conversation
+      ------
+      id: string
+      name: string
+      createdAt: date
+              
+      UserConversation
+      ------
+      userId
+      conversationId
+      
+      Message
+      -----
+      id
+      conversationId: string
+      content: string
+      createdAt: string
+      sender: userId
+      isSent: bool
+  */
   // eslint-disable-next-line class-methods-use-this
-  addChat() {
-    // TODO: Add chat to our state
+  async createConversation(gigId, gigUserId, gigTitle, content) {
+    const { currentUserId, currentUserName } = this.state;
+    const createdAt = new Date().toString();
+    const conversationId = v1();
+    const messageId = v1();
+    const conversation = { conversationId, currentUserId, currentUserName, gigUserId, gigId, gigTitle, content, createdAt, messageId };
+    console.log('create Conversation: ', conversation);
+    try {
+      const token = await helpers.token();
+      const response = await fetch(CONVERSATION_URL, {
+        method: 'POST',
+        body: JSON.stringify(conversation),
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const json = await response.json();
+      console.log('JSON: ', json);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+
+  async getConversations() {
+    try {
+      const token = await helpers.token();
+      const response = await fetch(CONVERSATIONS_URL, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const json = await response.json();
+      console.log('JSON: ', json);
+    } catch (error) {
+      console.error('Error:', error);
+    }
   }
 
   render() {
@@ -133,7 +180,7 @@ class CustomAppNavigator extends React.Component {
           chat,
           currentUserId,
           name,
-          addChat: this.addChat,
+          createConversation: this.createConversation,
           addGig: this.addGig,
           getGigs: this.getGigs,
           deleteGig: this.deleteGig,
