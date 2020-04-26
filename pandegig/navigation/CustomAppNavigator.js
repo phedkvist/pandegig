@@ -32,22 +32,31 @@ class CustomAppNavigator extends React.Component {
   componentDidMount = async () => {
     const user = await Auth.currentUserInfo();
     this.setState({ currentUserId: user.username, currentUserName: user.attributes.name });
-    // this.getGigs();
+    this.getGigs();
     this.getConversations();
   }
 
-  async getGigs() {
+  async getGigs(currentLocation) {
     try {
+      let latitude = 50;
+      let longitude = 50;
+      if (currentLocation) {
+        longitude = currentLocation.coords.longitude;
+        latitude = currentLocation.coords.latitude;
+      }
       const token = await helpers.token();
-      const response = await fetch(GIGS_URL, {
+      let url = `${GIGS_URL}?latitude=${latitude}&longitude=${longitude}`;
+      console.log("url", url)
+      const response = await fetch(url, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
       });
+
       const json = await response.json();
-      const gigsRes = JSON.parse(json).Items;
+      const gigsRes = JSON.parse(json);
       // console.log('GET GIGS RESPONSE: ', gigsRes);
       const newGigsFormatted = gigsRes.map((g) => ({ ...g, createdAt: new Date(g.createdAt) }));
       this.setState({ gigs: [...newGigsFormatted] });
@@ -130,7 +139,21 @@ class CustomAppNavigator extends React.Component {
     const createdAt = new Date().toString();
     const conversationId = v1();
     const messageId = v1();
-    const conversation = { conversationId, currentUserId, currentUserName, gigUserId, gigId, gigTitle, content, createdAt, messageId };
+    const userConversation1Id = v1();
+    const userConversation2Id = v1();
+    const conversation = {
+      conversationId,
+      currentUserId,
+      currentUserName,
+      gigUserId,
+      gigId,
+      gigTitle,
+      content,
+      createdAt,
+      messageId,
+      userConversation1Id,
+      userConversation2Id,
+    };
     console.log('create Conversation: ', conversation);
     try {
       const token = await helpers.token();
