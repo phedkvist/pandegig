@@ -53,18 +53,27 @@ class CustomAppNavigator extends React.Component {
     this.getGigs();
   }
 
-  async getGigs() {
+  async getGigs(currentLocation) {
     try {
+      let latitude = 50;
+      let longitude = 50;
+      if(currentLocation) {
+        longitude = currentLocation.coords.longitude;
+        latitude = currentLocation.coords.latitude;
+      }
       const token = await helpers.token();
-      const response = await fetch(awsUrl, {
+      let url = `${awsUrl}?latitude=${latitude}&longitude=${longitude}`;
+      console.log("url", url)
+      const response = await fetch(url, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
       });
+      
       const json = await response.json();
-      const gigsRes = JSON.parse(json).Items;
+      const gigsRes = JSON.parse(json);
       // console.log('GET GIGS RESPONSE: ', gigsRes);
       const newGigsFormatted = gigsRes.map((g) => ({ ...g, createdAt: new Date(g.createdAt) }));
       this.setState({ gigs: [...newGigsFormatted] });
