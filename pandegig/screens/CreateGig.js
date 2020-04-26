@@ -7,6 +7,7 @@ import { v1 } from 'uuid';
 import Input from '../components/Input';
 import Button from '../components/Button';
 import LocationList from '../components/LocationList';
+import MapBoxConfig from '../mapbox-exports';
 
 const styles = StyleSheet.create({
   container: {
@@ -24,9 +25,14 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 14,
     fontWeight: '600',
-    color: 'gray',
+    color: 'black',
     marginTop: 10,
     marginLeft: '3%',
+  },
+  section: {
+    borderTopColor: 'grey',
+    borderTopWidth: 2,
+    padding: 5
   },
   button: {
     alignItems: 'center',
@@ -35,7 +41,19 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 16,
     paddingBottom: 2,
-    color: '#ff5252',
+    color: 'black',
+  },
+  location: {
+    padding: 5,
+    margin: 10,
+  },
+  valid: {
+    backgroundColor: 'lightgreen',
+    borderRadius: 5,
+  },
+  invalid: {
+    backgroundColor: 'lightblue',
+    borderRadius: 5,
   },
   droidSafeArea: {
     flex: 1,
@@ -73,20 +91,35 @@ const CreateGig = ({ screenProps, navigation }) => {
   ]);
   const onChangeGigLocation = useCallback((text) => { 
     setGigLocation(text) 
-    console.log("text", text)
-    let url = `https://nominatim.openstreetmap.org/search/${text}?format=json`;
-    console.log(url)
-    fetch(url)
-    .then(response => {
-      return response.json();
-    })
-    .then(locations => {
-      setLocations(locations)
-    })
+    setLocation(undefined)
   }, [
     setGigLocation,
-    setLocations
+    setLocation
   ]);
+  const onPressFindLocations = useCallback(
+    () => {
+      if(gigLocation.length > 1) {
+        let url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${gigLocation}.json?access_token=${MapBoxConfig.token}`
+        fetch(url)
+        .then(response => {
+          return response.json();
+        }, err => {
+          console.error(err);
+        })
+        .then(locationsData => {
+          let locations = locationsData.features
+          setLocations(locations)
+        }, err => {
+          console.error(err);
+        });
+      } else {
+        setErrorMessage("Write at leaste two characters.")
+      }
+    }, [
+      setLocations,
+      gigLocation
+    ]
+  )
   const onChangeEarnings = useCallback(
     (text) => setEarnings(text.replace(/[^0-9]/g, '')),
     [setEarnings],
@@ -94,7 +127,7 @@ const CreateGig = ({ screenProps, navigation }) => {
   const onSelectLocation = useCallback(
     (location) => {
       setLocation(location)
-      setGigLocation(location.display_name)
+      setGigLocation(location.place_name)
       setLocations([])
     },
     [setLocation, setLocations],
@@ -144,8 +177,8 @@ const CreateGig = ({ screenProps, navigation }) => {
         title,
         description,
         gigLocation,
-        latitude: location.lat,
-        longitude: location.lon,
+        longitude: location.geometry.coordinates[0],
+        latitude: location.geometry.coordinates[1],
         earnings,
         phone,
         cardColor,
@@ -154,6 +187,8 @@ const CreateGig = ({ screenProps, navigation }) => {
       setTitle('');
       setDescription('');
       setGigLocation('');
+      setLocations([]);
+      setLocation(undefined);
       setEarnings('');
       setPhone('');
       navigation.navigate('FindGig');
@@ -175,7 +210,7 @@ const CreateGig = ({ screenProps, navigation }) => {
       <SafeAreaView>
         <ScrollView>
           <Text style={[styles.title, styles.droidSafeArea]}>Create Gig</Text>
-          <View>
+          <View style={styles.section}>
             <Text style={styles.label}>Title</Text>
             <Input
               value={title}
@@ -184,7 +219,7 @@ const CreateGig = ({ screenProps, navigation }) => {
               maxLength={34}
             />
           </View>
-          <View>
+          <View style={styles.section}>
             <Text style={styles.label}>Describe the Gig</Text>
             <Input
               value={description}
@@ -195,7 +230,7 @@ const CreateGig = ({ screenProps, navigation }) => {
               maxLength={250}
             />
           </View>
-          <View>
+          <View style={styles.section}>
             <Text style={styles.label}>Phone number</Text>
             <Input
               value={phone}
@@ -205,19 +240,28 @@ const CreateGig = ({ screenProps, navigation }) => {
               maxLength={10}
             />
           </View>
-          <View>
+          <View style={styles.section}>
             <Text style={styles.label}>Location</Text>
             <Input
               value={gigLocation}
+              style={[styles.location, location !== undefined ? styles.valid : styles.invalid]}
               placeholder="Drottninggatan 3"
+              placeholderTextColor="#fff"
               onChange={onChangeGigLocation}
             />
+            <View style={styles.button}>
+              <Button 
+                onPress={onPressFindLocations}
+              >
+                Find location
+              </Button>
+            </View>
+            <LocationList
+              locations={locations} 
+              onSelected={onSelectLocation} 
+            />
           </View>
-          <LocationList
-            locations={locations} 
-            onSelected={onSelectLocation} 
-          />
-          <View>
+          <View style={styles.section}>
             <Text style={styles.label}>Earnings</Text>
             <Input
               value={earnings}
