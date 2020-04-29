@@ -1,119 +1,12 @@
 import React, { useState, useCallback } from 'react';
-import { Platform, View, Text, StyleSheet, TextInput, TouchableWithoutFeedback, Keyboard, Button } from 'react-native';
-import Message from '../components/Message';
+import {
+  View, StyleSheet, TextInput, TouchableWithoutFeedback, Keyboard, Button,
+} from 'react-native';
+import PropTypes from 'prop-types';
 import { ScrollView } from 'react-native-gesture-handler';
-// import Button from '../components/Button';
-import Input from '../components/Input';
 import { KeyboardAccessoryView } from 'react-native-keyboard-accessory';
+import Message from '../components/Message';
 
-
-const MESSAGES = [
-  {
-    content: "Hej hur är läget",
-    createdAt: new Date("April 24, 2020 11:13:00"),
-    status: 'READ',
-    fromUserId: 'a',
-    id: '1',
-  },
-  {
-    content: "Det är bra, sj?",
-    createdAt: new Date("April 24, 2020 11:15:00"),
-    status: 'READ',
-    fromUserId: 'b',
-    id: '2',
-  },
-  {
-    content: "Det är bra",
-    createdAt: new Date("April 24, 2020 11:18:00"),
-    status: 'READ',
-    fromUserId: 'a',
-    id: '3',
-  },
-  {
-    content: "Hej hur är läget",
-    createdAt: new Date("April 24, 2020 11:13:00"),
-    status: 'READ',
-    fromUserId: 'a',
-    id: '4',
-  },
-  {
-    content: "Det är bra, sj?",
-    createdAt: new Date("April 24, 2020 11:15:00"),
-    status: 'READ',
-    fromUserId: 'b',
-    id: '4.4',
-  },
-  {
-    content: "Det är bra",
-    createdAt: new Date("April 24, 2020 11:18:00"),
-    status: 'READ',
-    fromUserId: 'a',
-    id: '5',
-  },
-  {
-    content: "Hej hur är läget",
-    createdAt: new Date("April 24, 2020 11:13:00"),
-    status: 'READ',
-    fromUserId: 'a',
-    id: '6',
-  },
-  {
-    content: "Det är bra, sj?",
-    createdAt: new Date("April 24, 2020 11:15:00"),
-    status: 'READ',
-    fromUserId: 'b',
-    id: '7',
-  },
-  {
-    content: "Det är bra",
-    createdAt: new Date("April 24, 2020 11:18:00"),
-    status: 'READ',
-    fromUserId: 'a',
-    id: '8',
-  },
-  {
-    content: "Hej hur är läget",
-    createdAt: new Date("April 24, 2020 11:13:00"),
-    status: 'READ',
-    fromUserId: 'a',
-    id: '8.5',
-  },
-  {
-    content: "Det är bra, sj?",
-    createdAt: new Date("April 24, 2020 11:15:00"),
-    status: 'READ',
-    fromUserId: 'b',
-    id: '9',
-  },
-  {
-    content: "Det är bra",
-    createdAt: new Date("April 24, 2020 11:18:00"),
-    status: 'READ',
-    fromUserId: 'a',
-    id: '10',
-  },
-  {
-    content: "Hej hur är läget",
-    createdAt: new Date("April 24, 2020 11:13:00"),
-    status: 'READ',
-    fromUserId: 'a',
-    id: '11',
-  },
-  {
-    content: "Det är bra, sj?",
-    createdAt: new Date("April 24, 2020 11:15:00"),
-    status: 'READ',
-    fromUserId: 'b',
-    id: '12',
-  },
-  {
-    content: "Det är bra",
-    createdAt: new Date("April 24, 2020 11:18:00"),
-    status: 'READ',
-    fromUserId: 'a',
-    id: '13',
-  },
-];
 
 const styles = StyleSheet.create({
   container: {
@@ -150,19 +43,27 @@ const styles = StyleSheet.create({
     padding: 10,
     fontSize: 16,
     marginRight: 10,
-    textAlignVertical: 'top'
+    textAlignVertical: 'top',
   },
   textInputButton: {
     flexShrink: 1,
-  }
+  },
 });
 
-const Chat = ({ navigation, messages = MESSAGES }) => {
-  const name = navigation.getParam('name', '');
+const Chat = ({ screenProps, navigation }) => {
+  const conversation = navigation.getParam('conversation', undefined);
+  const { currentUserId } = screenProps;
+  const { messages } = conversation;
   const [inputHeight, setInputHeight] = useState(35);
   const [input, setInput] = useState('');
   const onChangeText = useCallback((text) => setInput(text), [setInput]);
-  const onContentSizeChange = useCallback((event) => setInputHeight(event.nativeEvent.contentSize.height), [setInputHeight]);
+  const onContentSizeChange = useCallback((e) => {
+    setInputHeight(e.nativeEvent.contentSize.height);
+  }, [setInputHeight]);
+
+  const onSendMessage = useCallback(() => {
+    // TODO: Send message to CustomAppNavigator
+  }, []);
   return (
     <View
       style={styles.container}
@@ -171,40 +72,46 @@ const Chat = ({ navigation, messages = MESSAGES }) => {
         onPress={Keyboard.dismiss}
       >
         <>
-          <Text>{name}</Text>
           <ScrollView style={styles.messageContainer}>
             {
-              messages.map(c =>
+              messages.map((c) => (
                 <Message
                   content={c.content}
                   createdAt={c.createAt}
                   status={c.status}
-                  isRecieved={c.fromUserId === 'a'}
+                  isRecieved={c.sender !== currentUserId}
                   key={c.id}
                 />
-              )
+              ))
             }
           </ScrollView>
-          <KeyboardAccessoryView alwaysVisible={true}>
+          <KeyboardAccessoryView alwaysVisible>
             <View style={styles.textInputView}>
               <TextInput
                 value={input}
                 underlineColorAndroid="transparent"
                 style={[styles.textInput, { height: Math.max(35, inputHeight) + 5 }]}
-                multiline={true}
+                multiline
                 onChangeText={onChangeText}
                 onContentSizeChange={onContentSizeChange}
               />
               <Button
                 style={styles.textInputButton}
                 title="Send"
-                onPress={() => { }} />
+                onPress={onSendMessage}
+              />
             </View>
           </KeyboardAccessoryView>
         </>
       </TouchableWithoutFeedback>
     </View>
   );
+};
+
+Chat.propTypes = {
+  screenProps: PropTypes.shape({
+    currentUserId: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
 export default Chat;

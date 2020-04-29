@@ -1,14 +1,14 @@
 import React from 'react';
 import Auth from '@aws-amplify/auth';
+import { v1 } from 'uuid';
 import AppNavigator from './AppNavigator';
 import helpers from '../helpers';
-import { v1 } from 'uuid';
 
 
 // AWS API Gateway Endpoints
 const GIGS_URL = 'https://jbht08al65.execute-api.eu-central-1.amazonaws.com/beta/gigs';
 const CONVERSATION_URL = 'https://jbht08al65.execute-api.eu-central-1.amazonaws.com/beta/conversation';
-const CONVERSATION_MESSAGE_URL = 'https://jbht08al65.execute-api.eu-central-1.amazonaws.com/beta/conversation/message';
+// const CONVERSATION_MESSAGE_URL = 'https://jbht08al65.execute-api.eu-central-1.amazonaws.com/beta/conversation/message';
 const CONVERSATIONS_URL = 'https://jbht08al65.execute-api.eu-central-1.amazonaws.com/beta/conversations';
 
 class CustomAppNavigator extends React.Component {
@@ -18,7 +18,7 @@ class CustomAppNavigator extends React.Component {
     super(props);
     this.state = {
       gigs: [],
-      chat: [],
+      conversations: {},
       currentUserId: undefined,
       currentUserName: '',
     };
@@ -45,8 +45,7 @@ class CustomAppNavigator extends React.Component {
         latitude = currentLocation.coords.latitude;
       }
       const token = await helpers.token();
-      let url = `${GIGS_URL}?latitude=${latitude}&longitude=${longitude}`;
-      console.log("url", url)
+      const url = `${GIGS_URL}?latitude=${latitude}&longitude=${longitude}`;
       const response = await fetch(url, {
         method: 'GET',
         headers: {
@@ -61,6 +60,26 @@ class CustomAppNavigator extends React.Component {
       const newGigsFormatted = gigsRes.map((g) => ({ ...g, createdAt: new Date(g.createdAt) }));
       this.setState({ gigs: [...newGigsFormatted] });
     } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error('Error:', error);
+    }
+  }
+
+  async getConversations() {
+    try {
+      const token = await helpers.token();
+      const response = await fetch(CONVERSATIONS_URL, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const json = await response.json();
+      // console.log('JSON: ', json);
+      this.setState({ conversations: json });
+    } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('Error:', error);
     }
   }
@@ -80,8 +99,10 @@ class CustomAppNavigator extends React.Component {
         },
       });
       const json = await response.json();
+      // eslint-disable-next-line no-console
       console.log('JSON: ', json);
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('Error:', error);
     }
   }
@@ -102,37 +123,11 @@ class CustomAppNavigator extends React.Component {
       });
       await response.json();
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('Error:', error);
     }
   }
-  /*
-      Users
-      ------
-      cognitoId
-      name
-      id
-      registered
-              
-      Conversation
-      ------
-      id: string
-      name: string
-      createdAt: date
-              
-      UserConversation
-      ------
-      userId
-      conversationId
-      
-      Message
-      -----
-      id
-      conversationId: string
-      content: string
-      createdAt: string
-      sender: userId
-      isSent: bool
-  */
+
   // eslint-disable-next-line class-methods-use-this
   async createConversation(gigId, gigUserId, gigTitle, content) {
     const { currentUserId, currentUserName } = this.state;
@@ -154,7 +149,6 @@ class CustomAppNavigator extends React.Component {
       userConversation1Id,
       userConversation2Id,
     };
-    console.log('create Conversation: ', conversation);
     try {
       const token = await helpers.token();
       const response = await fetch(CONVERSATION_URL, {
@@ -165,33 +159,18 @@ class CustomAppNavigator extends React.Component {
           Authorization: `Bearer ${token}`,
         },
       });
+      // eslint-disable-next-line no-unused-vars
       const json = await response.json();
-      console.log('JSON: ', json);
+      this.getConversations();
     } catch (error) {
-      console.error('Error:', error);
-    }
-  }
-
-  async getConversations() {
-    try {
-      const token = await helpers.token();
-      const response = await fetch(CONVERSATIONS_URL, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      const json = await response.json();
-      console.log('JSON: ', json);
-    } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('Error:', error);
     }
   }
 
   render() {
     const {
-      gigs, chat, currentUserId, name,
+      gigs, conversations, currentUserId, name,
     } = this.state;
     const { navigation } = this.props;
 
@@ -200,7 +179,7 @@ class CustomAppNavigator extends React.Component {
         navigation={navigation}
         screenProps={{
           gigs,
-          chat,
+          conversations,
           currentUserId,
           name,
           createConversation: this.createConversation,

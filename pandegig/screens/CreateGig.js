@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
   section: {
     borderTopColor: 'grey',
     borderTopWidth: 2,
-    padding: 5
+    padding: 5,
   },
   button: {
     alignItems: 'center',
@@ -89,46 +89,42 @@ const CreateGig = ({ screenProps, navigation }) => {
   const onChangeDescription = useCallback((text) => setDescription(text), [
     setDescription,
   ]);
-  const onChangeGigLocation = useCallback((text) => { 
-    setGigLocation(text) 
-    setLocation(undefined)
+  const onChangeGigLocation = useCallback((text) => {
+    setGigLocation(text);
+    setLocation(undefined);
   }, [
     setGigLocation,
-    setLocation
+    setLocation,
   ]);
   const onPressFindLocations = useCallback(
     () => {
-      if(gigLocation.length > 1) {
-        let url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${gigLocation}.json?access_token=${MapBoxConfig.token}`
+      if (gigLocation.length > 1) {
+        const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${gigLocation}.json?access_token=${MapBoxConfig.token}`;
         fetch(url)
-        .then(response => {
-          return response.json();
-        }, err => {
-          console.error(err);
-        })
-        .then(locationsData => {
-          let locations = locationsData.features
-          setLocations(locations)
-        }, err => {
-          console.error(err);
-        });
+          .then((response) => response.json(), (err) => {
+            // eslint-disable-next-line no-console
+            console.error(err);
+          })
+          .then((locationsData) => {
+            setLocations(locationsData.features);
+          }, (err) => {
+            // eslint-disable-next-line no-console
+            console.error(err);
+          });
       } else {
-        setErrorMessage("Write at leaste two characters.")
+        setErrorMessage('Write at leaste two characters.');
       }
-    }, [
-      setLocations,
-      gigLocation
-    ]
-  )
+    }, [setLocations, gigLocation],
+  );
   const onChangeEarnings = useCallback(
     (text) => setEarnings(text.replace(/[^0-9]/g, '')),
     [setEarnings],
   );
   const onSelectLocation = useCallback(
-    (location) => {
-      setLocation(location)
-      setGigLocation(location.place_name)
-      setLocations([])
+    (l) => {
+      setLocation(l);
+      setGigLocation(l.place_name);
+      setLocations([]);
     },
     [setLocation, setLocations],
   );
@@ -169,7 +165,7 @@ const CreateGig = ({ screenProps, navigation }) => {
     if (!error) {
       const randomColors = ['#eef9bf', '#a7e9af', '#75b79e', '#6a8caf'];
       const cardColor = randomColors[Math.floor(Math.random() * randomColors.length)];
-      
+
       const createdAt = new Date();
 
       addGig({
@@ -195,6 +191,7 @@ const CreateGig = ({ screenProps, navigation }) => {
     }
     return errorMessage;
   }, [
+    location,
     errorMessage,
     description,
     title,
@@ -250,15 +247,15 @@ const CreateGig = ({ screenProps, navigation }) => {
               onChange={onChangeGigLocation}
             />
             <View style={styles.button}>
-              <Button 
+              <Button
                 onPress={onPressFindLocations}
               >
                 Find location
               </Button>
             </View>
             <LocationList
-              locations={locations} 
-              onSelected={onSelectLocation} 
+              locations={locations}
+              onSelected={onSelectLocation}
             />
           </View>
           <View style={styles.section}>
