@@ -30,36 +30,30 @@ const FindGig = ({ screenProps, navigation }) => {
   const { gigs, getGigs } = screenProps;
   const [refreshing, setRefreshing] = useState(false);
   const [currentLocation, setCurrentLocation] = useState(null);
-  const [errorMsg, setErrorMsg] = useState(null);
 
-  useEffect(() => {
-    (async () => {
+  const fetchGigs = useCallback(async () => {
       let { status } = await Location.requestPermissionsAsync();
       if (status !== 'granted') {
-        setErrorMsg('Permission to access location was denied');
+        console.log('Permission to access location was denied');
       }
 
       let location = await Location.getCurrentPositionAsync({});
-      console.log("now getting loc")
       setCurrentLocation(location);
-    })();
+      getGigs(location);
+    
+  }, [getGigs, setCurrentLocation, Location]);
+
+  useEffect(() => {
+    fetchGigs();
   }, []);
-
-  let text = 'Updating location..';
-  if (errorMsg) {
-    text = errorMsg;
-  } else if (currentLocation) {
-    text = JSON.stringify(currentLocation);
-  }
-
+  
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-    getGigs(currentLocation);
+    fetchGigs();
     wait(1000).then(() => setRefreshing(false));
   }, [setRefreshing, getGigs, currentLocation]);
   return (
     <SafeAreaView style={styles.container}>
-      <Text>{text}</Text>
       <ScrollView
         contentContainerStyle={styles.scrollView}
         refreshControl={
