@@ -1,17 +1,23 @@
 import React, { useCallback } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import Auth from '@aws-amplify/auth';
 import Button from '../components/Button';
+import ProfileInformation from '../components/ProfileInformation';
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+  controls: {
+    padding: 10,
+    borderTopWidth: 2,
+    borderTopColor: 'grey',
+    alignContent: 'center',
+    marginTop: 300
   },
 });
 
-const Settings = ({ navigation }) => {
+const Settings = ({ screenProps, navigation }) => {
+  
+  const { dynamoUser } = screenProps;
+
   const signOut = useCallback(async () => {
     await Auth.signOut()
       .then(() => {
@@ -23,11 +29,16 @@ const Settings = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Button
-        onPress={signOut}
-      >
-        Sign Out
-      </Button>
+      <ProfileInformation
+        profile={dynamoUser}
+      />
+      <View style={styles.controls}>
+        <Button
+          onPress={signOut}
+        >
+          Sign Out
+        </Button>
+      </View>
     </View>
   );
 };

@@ -7,6 +7,7 @@ import helpers from '../helpers';
 
 // AWS API Gateway Endpoints
 const GIGS_URL = 'https://jbht08al65.execute-api.eu-central-1.amazonaws.com/beta/gigs';
+const GET_USER_URL = 'https://jbht08al65.execute-api.eu-central-1.amazonaws.com/beta/users';
 const CONVERSATION_URL = 'https://jbht08al65.execute-api.eu-central-1.amazonaws.com/beta/conversation';
 // const CONVERSATION_MESSAGE_URL = 'https://jbht08al65.execute-api.eu-central-1.amazonaws.com/beta/conversation/message';
 const CONVERSATIONS_URL = 'https://jbht08al65.execute-api.eu-central-1.amazonaws.com/beta/conversations';
@@ -32,6 +33,7 @@ class CustomAppNavigator extends React.Component {
   componentDidMount = async () => {
     const user = await Auth.currentUserInfo();
     this.setState({ currentUserId: user.username, currentUserName: user.attributes.name });
+    this.getDynamoUser(user.username);
     this.getGigs();
     this.getConversations();
   }
@@ -78,6 +80,26 @@ class CustomAppNavigator extends React.Component {
       const json = await response.json();
       // console.log('JSON: ', json);
       this.setState({ conversations: json });
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error('Error:', error);
+    }
+  }
+
+  async getDynamoUser(cognitoId) {
+    try {
+      const token = await helpers.token();
+      const url = `${GET_USER_URL}?cognitoId=${cognitoId}`;
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const json = await response.json();
+      let user = JSON.parse(json);
+      this.setState({ dynamoUser: user });
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error('Error:', error);
@@ -170,10 +192,9 @@ class CustomAppNavigator extends React.Component {
 
   render() {
     const {
-      gigs, conversations, currentUserId, name,
+      gigs, conversations, currentUserId, name, dynamoUser
     } = this.state;
     const { navigation } = this.props;
-
     return (
       <AppNavigator
         navigation={navigation}
@@ -182,6 +203,7 @@ class CustomAppNavigator extends React.Component {
           conversations,
           currentUserId,
           name,
+          dynamoUser,
           createConversation: this.createConversation,
           addGig: this.addGig,
           getGigs: this.getGigs,
