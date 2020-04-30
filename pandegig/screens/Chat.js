@@ -2,7 +2,6 @@ import React, { useState, useCallback } from 'react';
 import {
   View, StyleSheet, TextInput, TouchableWithoutFeedback, Keyboard, Button,
 } from 'react-native';
-import PropTypes from 'prop-types';
 import { ScrollView } from 'react-native-gesture-handler';
 import { KeyboardAccessoryView } from 'react-native-keyboard-accessory';
 import Message from '../components/Message';
@@ -52,7 +51,7 @@ const styles = StyleSheet.create({
 
 const Chat = ({ screenProps, navigation }) => {
   const conversation = navigation.getParam('conversation', undefined);
-  const { currentUserId } = screenProps;
+  const { currentUserId, sendMessage } = screenProps;
   const { messages } = conversation;
   const [inputHeight, setInputHeight] = useState(35);
   const [input, setInput] = useState('');
@@ -62,8 +61,9 @@ const Chat = ({ screenProps, navigation }) => {
   }, [setInputHeight]);
 
   const onSendMessage = useCallback(() => {
-    // TODO: Send message to CustomAppNavigator
-  }, []);
+    sendMessage(input, conversation.id);
+    setInput('');
+  }, [sendMessage, input, conversation, setInput]);
   return (
     <View
       style={styles.container}
@@ -108,10 +108,5 @@ const Chat = ({ screenProps, navigation }) => {
   );
 };
 
-Chat.propTypes = {
-  screenProps: PropTypes.shape({
-    currentUserId: PropTypes.string.isRequired,
-  }).isRequired,
-};
 
 export default Chat;

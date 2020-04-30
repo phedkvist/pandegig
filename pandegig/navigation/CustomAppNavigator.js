@@ -8,7 +8,7 @@ import helpers from '../helpers';
 // AWS API Gateway Endpoints
 const GIGS_URL = 'https://jbht08al65.execute-api.eu-central-1.amazonaws.com/beta/gigs';
 const CONVERSATION_URL = 'https://jbht08al65.execute-api.eu-central-1.amazonaws.com/beta/conversation';
-// const CONVERSATION_MESSAGE_URL = 'https://jbht08al65.execute-api.eu-central-1.amazonaws.com/beta/conversation/message';
+const CONVERSATION_MESSAGE_URL = 'https://jbht08al65.execute-api.eu-central-1.amazonaws.com/beta/conversation/message';
 const CONVERSATIONS_URL = 'https://jbht08al65.execute-api.eu-central-1.amazonaws.com/beta/conversations';
 
 class CustomAppNavigator extends React.Component {
@@ -27,6 +27,7 @@ class CustomAppNavigator extends React.Component {
     this.getGigs = this.getGigs.bind(this);
     this.createConversation = this.createConversation.bind(this);
     this.getConversations = this.getConversations.bind(this);
+    this.sendMessage = this.sendMessage.bind(this);
   }
 
   componentDidMount = async () => {
@@ -168,6 +169,47 @@ class CustomAppNavigator extends React.Component {
     }
   }
 
+  async sendMessage(content, conversationId) {
+    /*
+      content: PropTypes.string.isRequired,
+      conversationId: PropTypes.string.isRequired,
+      createdAt: PropTypes.string.isRequired,
+      id: PropTypes.string.isRequired,
+      isSent: PropTypes.bool.isRequired,
+      sender: PropTypes.string.isRequired,
+    */
+    const { conversations, currentUserId } = this.state;
+    const message = {
+      content,
+      conversationId,
+      createdAt: new Date().toDateString(),
+      id: v1(),
+      isSent: false,
+      sender: currentUserId,
+    };
+    console.log('MESSAGES: ', message);
+    conversations[conversationId].messages.push(message);
+    this.setState({ conversations });
+
+    try {
+      const token = await helpers.token();
+      const response = await fetch(CONVERSATION_URL, {
+        method: 'POST',
+        body: JSON.stringify(message),
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      // eslint-disable-next-line no-unused-vars
+      const json = await response.json();
+      // SET isSent to true now.
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error('Error:', error);
+    }
+  }
+
   render() {
     const {
       gigs, conversations, currentUserId, name,
@@ -186,6 +228,7 @@ class CustomAppNavigator extends React.Component {
           addGig: this.addGig,
           getGigs: this.getGigs,
           deleteGig: this.deleteGig,
+          sendMessage: this.sendMessage,
         }}
       />
     );
