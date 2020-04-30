@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import PropTypes from 'prop-types';
+import { View, StyleSheet } from 'react-native';
 import Auth from '@aws-amplify/auth';
 import Button from '../components/Button';
 import ProfileInformation from '../components/ProfileInformation';
@@ -10,12 +11,11 @@ const styles = StyleSheet.create({
     borderTopWidth: 2,
     borderTopColor: 'grey',
     alignContent: 'center',
-    marginTop: 300
+    marginTop: 300,
   },
 });
 
 const Settings = ({ screenProps, navigation }) => {
-  
   const { dynamoUser } = screenProps;
 
   const signOut = useCallback(async () => {
@@ -41,6 +41,17 @@ const Settings = ({ screenProps, navigation }) => {
       </View>
     </View>
   );
+};
+
+Settings.propTypes = {
+  screenProps: PropTypes.shape({
+    dynamoUser: PropTypes.shape({
+      username: PropTypes.string.isRequired,
+      email: PropTypes.string.isRequired,
+      picture: PropTypes.string.isRequired,
+      skillLevel: PropTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
 };
 
 export default Settings;
