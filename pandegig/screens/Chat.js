@@ -2,6 +2,7 @@ import React, { useState, useCallback } from 'react';
 import {
   View, StyleSheet, TextInput, TouchableWithoutFeedback, Keyboard, Button,
 } from 'react-native';
+import PropTypes from 'prop-types';
 import { ScrollView } from 'react-native-gesture-handler';
 import { KeyboardAccessoryView } from 'react-native-keyboard-accessory';
 import Message from '../components/Message';
@@ -109,5 +110,11 @@ const Chat = ({ screenProps, navigation }) => {
   );
 };
 
+Chat.propTypes = {
+  screenProps: PropTypes.shape({
+    currentUserId: PropTypes.string.isRequired,
+    sendMessage: PropTypes.func.isRequired,
+  }).isRequired,
+};
 
 export default Chat;

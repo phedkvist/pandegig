@@ -170,14 +170,6 @@ class CustomAppNavigator extends React.Component {
   }
 
   async sendMessage(content, conversationId) {
-    /*
-      content: PropTypes.string.isRequired,
-      conversationId: PropTypes.string.isRequired,
-      createdAt: PropTypes.string.isRequired,
-      id: PropTypes.string.isRequired,
-      isSent: PropTypes.bool.isRequired,
-      sender: PropTypes.string.isRequired,
-    */
     const { conversations, currentUserId } = this.state;
     const id = v1();
     const message = {
@@ -188,7 +180,6 @@ class CustomAppNavigator extends React.Component {
       isSent: false,
       sender: currentUserId,
     };
-    console.log('MESSAGES: ', message);
     conversations[conversationId].messages.push(message);
     this.setState({ conversations });
 

@@ -42,7 +42,6 @@ const ChatList = ({ screenProps, navigation }) => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      console.log('SHOULD FETCH CONVERSATION UPDATES');
       getConversations();
     }, 10000);
     return () => clearInterval(interval);
