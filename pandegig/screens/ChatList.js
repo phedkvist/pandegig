@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import {
   View, StyleSheet, RefreshControl, SafeAreaView,
 } from 'react-native';
@@ -28,7 +28,7 @@ function wait(timeout) {
 }
 
 const ChatList = ({ screenProps, navigation }) => {
-  const { conversations } = screenProps;
+  const { conversations, getConversations } = screenProps;
   // console.log('CONVERSATIONS: ', conversations);
   const conversationsArray = Object.values(conversations);
 
@@ -36,8 +36,16 @@ const ChatList = ({ screenProps, navigation }) => {
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     // get messages
+    getConversations();
     wait(1000).then(() => setRefreshing(false));
   }, [setRefreshing]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      getConversations();
+    }, 10000);
+    return () => clearInterval(interval);
+  }, [getConversations]);
 
 
   return (
@@ -63,6 +71,7 @@ const ChatList = ({ screenProps, navigation }) => {
 
 ChatList.propTypes = {
   screenProps: PropTypes.shape({
+    getConversations: PropTypes.func.isRequired,
     conversations: PropTypes.objectOf(
       PropTypes.shape({
         messages: PropTypes.arrayOf(

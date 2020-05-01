@@ -52,8 +52,9 @@ const styles = StyleSheet.create({
 
 const Chat = ({ screenProps, navigation }) => {
   const conversation = navigation.getParam('conversation', undefined);
-  const { currentUserId } = screenProps;
+  const { currentUserId, sendMessage } = screenProps;
   const { messages } = conversation;
+  const sortedMessages = messages.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
   const [inputHeight, setInputHeight] = useState(35);
   const [input, setInput] = useState('');
   const onChangeText = useCallback((text) => setInput(text), [setInput]);
@@ -62,8 +63,9 @@ const Chat = ({ screenProps, navigation }) => {
   }, [setInputHeight]);
 
   const onSendMessage = useCallback(() => {
-    // TODO: Send message to CustomAppNavigator
-  }, []);
+    sendMessage(input, conversation.id);
+    setInput('');
+  }, [sendMessage, input, conversation, setInput]);
   return (
     <View
       style={styles.container}
@@ -74,11 +76,11 @@ const Chat = ({ screenProps, navigation }) => {
         <>
           <ScrollView style={styles.messageContainer}>
             {
-              messages.map((c) => (
+              sortedMessages.map((c) => (
                 <Message
                   content={c.content}
                   createdAt={c.createAt}
-                  status={c.status}
+                  isSent={c.isSent}
                   isRecieved={c.sender !== currentUserId}
                   key={c.id}
                 />
@@ -111,6 +113,7 @@ const Chat = ({ screenProps, navigation }) => {
 Chat.propTypes = {
   screenProps: PropTypes.shape({
     currentUserId: PropTypes.string.isRequired,
+    sendMessage: PropTypes.func.isRequired,
   }).isRequired,
 };
 

@@ -9,7 +9,7 @@ import helpers from '../helpers';
 const GIGS_URL = 'https://jbht08al65.execute-api.eu-central-1.amazonaws.com/beta/gigs';
 const GET_USER_URL = 'https://jbht08al65.execute-api.eu-central-1.amazonaws.com/beta/users';
 const CONVERSATION_URL = 'https://jbht08al65.execute-api.eu-central-1.amazonaws.com/beta/conversation';
-// const CONVERSATION_MESSAGE_URL = 'https://jbht08al65.execute-api.eu-central-1.amazonaws.com/beta/conversation/message';
+const CONVERSATION_MESSAGE_URL = 'https://jbht08al65.execute-api.eu-central-1.amazonaws.com/beta/conversation/message';
 const CONVERSATIONS_URL = 'https://jbht08al65.execute-api.eu-central-1.amazonaws.com/beta/conversations';
 
 class CustomAppNavigator extends React.Component {
@@ -28,6 +28,7 @@ class CustomAppNavigator extends React.Component {
     this.getGigs = this.getGigs.bind(this);
     this.createConversation = this.createConversation.bind(this);
     this.getConversations = this.getConversations.bind(this);
+    this.sendMessage = this.sendMessage.bind(this);
   }
 
   componentDidMount = async () => {
@@ -190,6 +191,51 @@ class CustomAppNavigator extends React.Component {
     }
   }
 
+  async sendMessage(content, conversationId) {
+    const { conversations, currentUserId } = this.state;
+    const id = v1();
+    const message = {
+      content,
+      conversationId,
+      createdAt: new Date().toString(),
+      id,
+      isSent: false,
+      sender: currentUserId,
+    };
+    conversations[conversationId].messages.push(message);
+    this.setState({ conversations });
+
+    try {
+      const token = await helpers.token();
+      const response = await fetch(CONVERSATION_MESSAGE_URL, {
+        method: 'POST',
+        body: JSON.stringify(message),
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      // eslint-disable-next-line no-unused-vars
+      const res = await response.json();
+      if (res.statusCode === 200) {
+        const { conversations: newConversations } = this.state;
+        const allMessages = newConversations[conversationId].messages;
+        const updatedMessage = allMessages.map((m) => {
+          if (m.id === id) {
+            const newM = m;
+            newM.isSent = true;
+          }
+          return m;
+        });
+        newConversations[conversationId].messages = updatedMessage;
+        this.setState({ conversations: newConversations });
+      }
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error('Error:', error);
+    }
+  }
+
   render() {
     const {
       gigs, conversations, currentUserId, name, dynamoUser,
@@ -205,9 +251,11 @@ class CustomAppNavigator extends React.Component {
           name,
           dynamoUser,
           createConversation: this.createConversation,
+          getConversations: this.getConversations,
           addGig: this.addGig,
           getGigs: this.getGigs,
           deleteGig: this.deleteGig,
+          sendMessage: this.sendMessage,
         }}
       />
     );

@@ -50,7 +50,10 @@ const ChatListItem = ({ navigation, conversation }) => {
   const { id, user, title } = conversation;
   const split = user.username.split(' ');
   const avatar = split.length > 1 ? split[0][0] + split[1][0] : split[0][0];
-  const lastMessage = conversation.messages[conversation.messages.length - 1].content;
+  const sortedMessages = conversation.messages.sort(
+    (a, b) => new Date(a.createdAt) - new Date(b.createdAt),
+  );
+  const lastMessage = sortedMessages[sortedMessages.length - 1].content;
   return (
     <TouchableOpacity
       key={id}
