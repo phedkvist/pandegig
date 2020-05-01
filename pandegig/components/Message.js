@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import PropTypes from 'prop-types';
 import Ionicons from 'react-native-vector-icons/MaterialIcons';
@@ -28,16 +28,22 @@ const style = StyleSheet.create({
 });
 
 const Message = ({
-  content, isRecieved, createdAt, status,
+  // eslint-disable-next-line no-unused-vars
+  content, isRecieved, createdAt, isSent,
 }) => {
   const side = isRecieved ? style.leftMessage : style.rightMessage;
   const sideColor = isRecieved ? style.leftColor : style.rightColor;
+
   return (
     <View style={side}>
       <View style={[style.message, sideColor]}>
         <Text>{content}</Text>
       </View>
-      <Ionicons name="check" size={14} color="green" />
+      {isSent && (
+        <View style={{ ...side, marginLeft: 12, marginRight: 12 }}>
+          <Ionicons name="check" size={14} color="green" />
+        </View>
+      )}
     </View>
   );
 };
@@ -46,7 +52,7 @@ Message.propTypes = {
   content: PropTypes.string.isRequired,
   isRecieved: PropTypes.bool.isRequired,
   createdAt: PropTypes.string.isRequired,
-  status: PropTypes.bool.isRequired,
+  isSent: PropTypes.bool.isRequired,
 };
 
 export default Message;

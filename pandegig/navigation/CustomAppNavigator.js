@@ -179,11 +179,12 @@ class CustomAppNavigator extends React.Component {
       sender: PropTypes.string.isRequired,
     */
     const { conversations, currentUserId } = this.state;
+    const id = v1();
     const message = {
       content,
       conversationId,
-      createdAt: new Date().toDateString(),
-      id: v1(),
+      createdAt: new Date().toString(),
+      id,
       isSent: false,
       sender: currentUserId,
     };
@@ -193,7 +194,7 @@ class CustomAppNavigator extends React.Component {
 
     try {
       const token = await helpers.token();
-      const response = await fetch(CONVERSATION_URL, {
+      const response = await fetch(CONVERSATION_MESSAGE_URL, {
         method: 'POST',
         body: JSON.stringify(message),
         headers: {
@@ -202,8 +203,20 @@ class CustomAppNavigator extends React.Component {
         },
       });
       // eslint-disable-next-line no-unused-vars
-      const json = await response.json();
-      // SET isSent to true now.
+      const res = await response.json();
+      if (res.statusCode === 200) {
+        const { conversations: newConversations } = this.state;
+        const allMessages = newConversations[conversationId].messages;
+        const updatedMessage = allMessages.map((m) => {
+          if (m.id === id) {
+            const newM = m;
+            newM.isSent = true;
+          }
+          return m;
+        });
+        newConversations[conversationId].messages = updatedMessage;
+        this.setState({ conversations: newConversations });
+      }
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error('Error:', error);
@@ -225,6 +238,7 @@ class CustomAppNavigator extends React.Component {
           currentUserId,
           name,
           createConversation: this.createConversation,
+          getConversations: this.getConversations,
           addGig: this.addGig,
           getGigs: this.getGigs,
           deleteGig: this.deleteGig,

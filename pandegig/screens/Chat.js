@@ -53,6 +53,7 @@ const Chat = ({ screenProps, navigation }) => {
   const conversation = navigation.getParam('conversation', undefined);
   const { currentUserId, sendMessage } = screenProps;
   const { messages } = conversation;
+  const sortedMessages = messages.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
   const [inputHeight, setInputHeight] = useState(35);
   const [input, setInput] = useState('');
   const onChangeText = useCallback((text) => setInput(text), [setInput]);
@@ -74,11 +75,11 @@ const Chat = ({ screenProps, navigation }) => {
         <>
           <ScrollView style={styles.messageContainer}>
             {
-              messages.map((c) => (
+              sortedMessages.map((c) => (
                 <Message
                   content={c.content}
                   createdAt={c.createAt}
-                  status={c.status}
+                  isSent={c.isSent}
                   isRecieved={c.sender !== currentUserId}
                   key={c.id}
                 />
