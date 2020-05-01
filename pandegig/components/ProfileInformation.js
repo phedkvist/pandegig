@@ -32,7 +32,6 @@ const styles = StyleSheet.create({
     marginTop: 40,
   },
   bodyContent: {
-    flex: 1,
     alignItems: 'center',
     padding: 30,
   },
@@ -44,7 +43,7 @@ const styles = StyleSheet.create({
 });
 
 const ProfileInformation = ({ profile }) => (
-  <View style={styles.container}>
+  <View>
     <View style={styles.header} />
     <Image style={styles.avatar} source={{ uri: profile.picture }} />
     <View style={styles.body}>
