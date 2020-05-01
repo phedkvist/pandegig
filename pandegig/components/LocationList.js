@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Location from './Location';
 import { View, StyleSheet, Text } from 'react-native';
+import Location from './Location';
 
 const styles = StyleSheet.create({
   locationList: {
@@ -22,27 +22,24 @@ const styles = StyleSheet.create({
 });
 
 const LocationList = ({
-  locations, onSelected
-}) => {
-  return locations.length ? (
-    <View style={styles.locationList}>
-      <Text style={styles.label}>Choose Location</Text>
-      {locations.map((location, i) => {
-        return (
-          <Location
-            key={i}
-            location={location}
-            onSelected={onSelected}
-          />
-        );
-      })}
-    </View>
-  ) : <></>;
-};
+  locations, onSelected,
+}) => (locations.length ? (
+  <View style={styles.locationList}>
+    <Text style={styles.label}>Choose Location</Text>
+    {locations.map((location) => (
+      <Location
+        key={location.id}
+        location={location}
+        onSelected={onSelected}
+      />
+    ))}
+  </View>
+) : <></>);
 
 LocationList.propTypes = {
+  // eslint-disable-next-line react/forbid-prop-types
   locations: PropTypes.array,
-  onSelected: PropTypes.func.isRequired
+  onSelected: PropTypes.func.isRequired,
 };
 
 LocationList.defaultProps = {

@@ -98,7 +98,7 @@ export default function SignUp({ navigation }) {
   const confirmSignUp = useCallback(async () => {
     await Auth.confirmSignUp(email, authCode)
       .then(() => {
-        // await create user... 
+        // await create user...
         navigation.navigate('SignIn');
         // eslint-disable-next-line no-console
         console.log('Confirm sign up successful');

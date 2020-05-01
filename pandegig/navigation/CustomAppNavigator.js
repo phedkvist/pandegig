@@ -98,7 +98,7 @@ class CustomAppNavigator extends React.Component {
         },
       });
       const json = await response.json();
-      let user = JSON.parse(json);
+      const user = JSON.parse(json);
       this.setState({ dynamoUser: user });
     } catch (error) {
       // eslint-disable-next-line no-console
@@ -192,7 +192,7 @@ class CustomAppNavigator extends React.Component {
 
   render() {
     const {
-      gigs, conversations, currentUserId, name, dynamoUser
+      gigs, conversations, currentUserId, name, dynamoUser,
     } = this.state;
     const { navigation } = this.props;
     return (

@@ -33,6 +33,7 @@ const Location = ({ location, onSelected }) => {
 };
 
 Location.propTypes = {
+  // eslint-disable-next-line react/forbid-prop-types
   location: PropTypes.object.isRequired,
   onSelected: PropTypes.func.isRequired,
 };

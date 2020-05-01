@@ -1,11 +1,11 @@
 import React, { useCallback, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
-  StyleSheet, Text, RefreshControl, SafeAreaView,
+  StyleSheet, RefreshControl, SafeAreaView,
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import Gig from '../components/Gig';
 import * as Location from 'expo-location';
+import Gig from '../components/Gig';
 
 const styles = StyleSheet.create({
   container: {
@@ -29,29 +29,26 @@ function wait(timeout) {
 const FindGig = ({ screenProps, navigation }) => {
   const { gigs, getGigs } = screenProps;
   const [refreshing, setRefreshing] = useState(false);
-  const [currentLocation, setCurrentLocation] = useState(null);
 
   const fetchGigs = useCallback(async () => {
-      let { status } = await Location.requestPermissionsAsync();
-      if (status !== 'granted') {
-        console.log('Permission to access location was denied');
-      }
+    const { status } = await Location.requestPermissionsAsync();
+    if (status !== 'granted') {
+      console.log('Permission to access location was denied');
+    }
 
-      let location = await Location.getCurrentPositionAsync({});
-      setCurrentLocation(location);
-      getGigs(location);
-    
-  }, [getGigs, setCurrentLocation, Location]);
+    const location = await Location.getCurrentPositionAsync({});
+    getGigs(location);
+  }, [getGigs]);
 
   useEffect(() => {
     fetchGigs();
-  }, []);
-  
+  }, [fetchGigs]);
+
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     fetchGigs();
     wait(1000).then(() => setRefreshing(false));
-  }, [setRefreshing, getGigs, currentLocation]);
+  }, [setRefreshing, fetchGigs]);
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView
