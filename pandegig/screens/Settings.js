@@ -1,22 +1,20 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import Auth from '@aws-amplify/auth';
-import Button from '../components/Button';
 import ProfileInformation from '../components/ProfileInformation';
-
-const styles = StyleSheet.create({
-  controls: {
-    padding: 10,
-    borderTopWidth: 2,
-    borderTopColor: 'grey',
-    alignContent: 'center',
-    marginTop: 300,
-  },
-});
+import SettingsMenu from '../components/SettingsMenu';
 
 const Settings = ({ screenProps, navigation }) => {
   const { dynamoUser } = screenProps;
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const onToggleMenu = useCallback(() => {
+    setIsMenuOpen(!isMenuOpen);
+  }, [
+    setIsMenuOpen,
+    isMenuOpen
+  ]);
 
   const signOut = useCallback(async () => {
     await Auth.signOut()
@@ -28,17 +26,14 @@ const Settings = ({ screenProps, navigation }) => {
   }, [navigation]);
 
   return (
-    <View style={styles.container}>
+    <View>
+      <SettingsMenu 
+        isMenuOpen={isMenuOpen} 
+        onToggleMenu={onToggleMenu}
+        signOut={signOut} />
       <ProfileInformation
         profile={dynamoUser}
       />
-      <View style={styles.controls}>
-        <Button
-          onPress={signOut}
-        >
-          Sign Out
-        </Button>
-      </View>
     </View>
   );
 };

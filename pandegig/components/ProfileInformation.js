@@ -1,4 +1,5 @@
 import React from 'react';
+import { Divider } from 'react-native-elements';
 import PropTypes from 'prop-types';
 import {
   StyleSheet,
@@ -40,6 +41,14 @@ const styles = StyleSheet.create({
     color: '#00BFFF',
     marginTop: 10,
   },
+  divider: {
+    height: 2,
+    backgroundColor: 'blue'
+  },
+  skillsHeading: {
+    fontSize: 20,
+    margin: 5
+  }
 });
 
 const ProfileInformation = ({ profile }) => (
@@ -52,6 +61,12 @@ const ProfileInformation = ({ profile }) => (
         <Text style={styles.info}>
           Skill level:
           {profile.skillLevel}
+        </Text>
+      </View>
+      <Divider style={styles.divider} />
+      <View>
+        <Text style={styles.skillsHeading}> 
+          Skills
         </Text>
       </View>
     </View>
