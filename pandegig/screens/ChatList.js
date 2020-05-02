@@ -5,6 +5,7 @@ import {
 import PropTypes from 'prop-types';
 import { ScrollView } from 'react-native-gesture-handler';
 import ChatItemList from '../components/ChatListItem';
+import ConversationsPropType from '../propTypes/conversations';
 
 
 const styles = StyleSheet.create({
@@ -72,29 +73,7 @@ const ChatList = ({ screenProps, navigation }) => {
 ChatList.propTypes = {
   screenProps: PropTypes.shape({
     getConversations: PropTypes.func.isRequired,
-    conversations: PropTypes.objectOf(
-      PropTypes.shape({
-        messages: PropTypes.arrayOf(
-          PropTypes.shape({
-            content: PropTypes.string.isRequired,
-            conversationId: PropTypes.string.isRequired,
-            createdAt: PropTypes.string.isRequired,
-            id: PropTypes.string.isRequired,
-            isSent: PropTypes.bool.isRequired,
-            sender: PropTypes.string.isRequired,
-          }),
-        ),
-        createdAt: PropTypes.string.isRequired,
-        gigId: PropTypes.string.isRequired,
-        id: PropTypes.string.isRequired,
-        title: PropTypes.string.isRequired,
-        user: PropTypes.shape({
-          cognitoId: PropTypes.string.isRequired,
-          registered: PropTypes.bool.isRequired,
-          username: PropTypes.string.isRequired,
-        }),
-      }).isRequired,
-    ),
+    conversations: ConversationsPropType.isRequired,
   }).isRequired,
 };
 
