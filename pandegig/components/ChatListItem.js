@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import {
   TouchableOpacity, View, Text, StyleSheet,
 } from 'react-native';
-import PropTypes from 'prop-types';
+import { ConversationPropType } from '../propTypes/conversations';
 
 const styles = StyleSheet.create({
   item: {
@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
 
 const ChatListItem = ({ navigation, conversation }) => {
   const onNavigateToChat = useCallback(() => {
-    navigation.navigate('Chat', { conversation });
+    navigation.navigate('Chat', { conversationId: conversation.id, title: conversation.title });
   }, [navigation, conversation]);
 
   const { id, user, title } = conversation;
@@ -77,27 +77,7 @@ const ChatListItem = ({ navigation, conversation }) => {
 };
 
 ChatListItem.propTypes = {
-  conversation: PropTypes.shape({
-    messages: PropTypes.arrayOf(
-      PropTypes.shape({
-        content: PropTypes.string.isRequired,
-        conversationId: PropTypes.string.isRequired,
-        createdAt: PropTypes.string.isRequired,
-        id: PropTypes.string.isRequired,
-        isSent: PropTypes.bool.isRequired,
-        sender: PropTypes.string.isRequired,
-      }),
-    ),
-    createdAt: PropTypes.string.isRequired,
-    gigId: PropTypes.string.isRequired,
-    id: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
-    user: PropTypes.shape({
-      cognitoId: PropTypes.string.isRequired,
-      registered: PropTypes.bool.isRequired,
-      username: PropTypes.string.isRequired,
-    }),
-  }).isRequired,
+  conversation: ConversationPropType.isRequired,
 };
 
 export default ChatListItem;
