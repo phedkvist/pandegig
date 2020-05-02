@@ -69,6 +69,7 @@ class Chat extends Component {
     };
     this.onContentSizeChange = this.onContentSizeChange.bind(this);
     this.onChangeText = this.onChangeText.bind(this);
+    this.onSendMessage = this.onSendMessage.bind(this);
   }
 
   onContentSizeChange(e) {
