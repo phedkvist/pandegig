@@ -13,7 +13,7 @@ const Settings = ({ screenProps, navigation }) => {
     setIsMenuOpen(!isMenuOpen);
   }, [
     setIsMenuOpen,
-    isMenuOpen
+    isMenuOpen,
   ]);
 
   const signOut = useCallback(async () => {
@@ -27,10 +27,11 @@ const Settings = ({ screenProps, navigation }) => {
 
   return (
     <View>
-      <SettingsMenu 
-        isMenuOpen={isMenuOpen} 
+      <SettingsMenu
+        isMenuOpen={isMenuOpen}
         onToggleMenu={onToggleMenu}
-        signOut={signOut} />
+        signOut={signOut}
+      />
       <ProfileInformation
         profile={dynamoUser}
       />
