@@ -43,12 +43,12 @@ const styles = StyleSheet.create({
   },
   divider: {
     height: 2,
-    backgroundColor: 'blue'
+    backgroundColor: 'blue',
   },
   skillsHeading: {
     fontSize: 20,
-    margin: 5
-  }
+    margin: 5,
+  },
 });
 
 const ProfileInformation = ({ profile }) => (
@@ -65,7 +65,7 @@ const ProfileInformation = ({ profile }) => (
       </View>
       <Divider style={styles.divider} />
       <View>
-        <Text style={styles.skillsHeading}> 
+        <Text style={styles.skillsHeading}>
           Skills
         </Text>
       </View>
