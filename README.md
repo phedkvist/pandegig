@@ -8,12 +8,13 @@ Many people have lost their source of income during the Covid-19 pandemic. And s
 This app brings people and businesses together. Pandemic meets the gig-economy, Pandegig. A platform where people and business can post gigs that other people can get paid for.
 
 ## Screenshots
-![Gigs screen](pandegig/screenshots/gigs.png =150x)
-![Create gig screen](pandegig/screenshots/create-gig.png =150x)
-![Create gig location screen](pandegig/screenshots/create-gig-location.png =150x)
-![Single gig screen](pandegig/screenshots/single-gig.png =150x)
-![Chat list screen](pandegig/screenshots/chat-list.png =150x)
-![Single chat screen](pandegig/screenshots/single-chat.png =150x)
+<img src="pandegig/screenshots/gigs.png" alt="Gigs screen"
+	title="Gigs screen" width="250" />
+<img src="pandegig/screenshots/create-gig.png" alt="Create gig screen" title="Create gig screen" width="250" />
+<img src="pandegig/screenshots/create-gig-location.png" alt="Create gig location screen" title="Create gig location screen" width="250" />
+<img src="pandegig/screenshots/single-gig.png" alt="Single gig screen" title="Single gig screen" width="250" />
+<img src="pandegig/screenshots/chat-list.png" alt="Chat list screen" title="Chat list screen" width="250" />
+<img src="pandegig/screenshots/single-chat.png" alt="Single chat screen" title="Single chat screen" width="250" />
 
 ## Features
  - Users can post gigs, ie a description of what the task is, where it is located, how much earnings the worker gets.
